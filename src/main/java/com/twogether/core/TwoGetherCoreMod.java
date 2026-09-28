@@ -405,6 +405,17 @@ public class TwoGetherCoreMod {
 
     // ---- Mixer : cuve octogonale en acier, colonne de rotors a pales au centre ----
 
+    // Coque en laiton, propre au mixer : il ne partage plus les blocs acier de la tour.
+    public static final DeferredBlock<DistillationTowerCasingBlock> MIXER_CASING = BLOCKS.register("mixer_casing",
+            () -> new DistillationTowerCasingBlock(towerBlockProperties()));
+    public static final DeferredItem<BlockItem> MIXER_CASING_ITEM =
+            ITEMS.registerSimpleBlockItem("mixer_casing", MIXER_CASING);
+
+    public static final DeferredBlock<DistillationTowerValveBlock> MIXER_VALVE = BLOCKS.register("mixer_valve",
+            () -> new DistillationTowerValveBlock(towerBlockProperties()));
+    public static final DeferredItem<BlockItem> MIXER_VALVE_ITEM =
+            ITEMS.registerSimpleBlockItem("mixer_valve", MIXER_VALVE);
+
     public static final DeferredBlock<MixerControllerBlock> MIXER_CONTROLLER = BLOCKS.register("mixer_controller",
             () -> new MixerControllerBlock(towerBlockProperties()));
     public static final DeferredItem<BlockItem> MIXER_CONTROLLER_ITEM =
@@ -446,6 +457,8 @@ public class TwoGetherCoreMod {
                         output.accept(DISTILLATION_VALVE_STEEL_ITEM.get());
                         output.accept(DISTILLATION_CONTROLLER_COPPER_ITEM.get());
                         output.accept(DISTILLATION_CONTROLLER_STEEL_ITEM.get());
+                        output.accept(MIXER_CASING_ITEM.get());
+                        output.accept(MIXER_VALVE_ITEM.get());
                         output.accept(MIXER_CONTROLLER_ITEM.get());
                         output.accept(MIXER_ROTOR_ITEM.get());
                         output.accept(MIXER_DRIVE_ITEM.get());
@@ -461,7 +474,8 @@ public class TwoGetherCoreMod {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DistillationTowerValveBlockEntity>> DISTILLATION_VALVE_BE =
             BLOCK_ENTITIES.register("distillation_tower_valve", () -> BlockEntityType.Builder.of(
-                    DistillationTowerValveBlockEntity::new, DISTILLATION_VALVE_COPPER.get(), DISTILLATION_VALVE_STEEL.get()).build(null));
+                    DistillationTowerValveBlockEntity::new, DISTILLATION_VALVE_COPPER.get(), DISTILLATION_VALVE_STEEL.get(),
+                    MIXER_VALVE.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DistillationTowerControllerBlockEntity>> DISTILLATION_CONTROLLER_BE =
             BLOCK_ENTITIES.register("distillation_tower_controller", () -> BlockEntityType.Builder.of(

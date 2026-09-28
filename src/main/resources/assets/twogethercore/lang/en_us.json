@@ -69,5 +69,7 @@
   "gui.twogethercore.status.no_power": "Not enough power",
   "emi.category.twogethercore.mixing": "Mixing",
   "emi.twogethercore.mixing.energy": "%s FE/t per blade",
-  "emi.twogethercore.mixing.cold": "No heat needed"
+  "emi.twogethercore.mixing.cold": "No heat needed",
+  "block.twogethercore.mixer_casing": "Mixer Casing",
+  "block.twogethercore.mixer_valve": "Mixer Valve"
 }

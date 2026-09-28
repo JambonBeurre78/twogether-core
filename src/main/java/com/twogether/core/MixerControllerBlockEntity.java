@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The Mixer: a squat steel vat on the Distillation Tower's octagon, with a bladed rotor column
+ * The Mixer: a squat brass vat on the Distillation Tower's octagon, with a bladed rotor column
  * in the middle. It runs on power and, for heated recipes, on heat - both fed through the steel
  * valves. More blades mix faster and draw proportionally more power, like Mekanism's turbine.
  */
@@ -374,7 +374,7 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         }
     }
 
-    /** A body ring: steel wall (or this controller), a rotor in the centre, open space elsewhere. */
+    /** A body ring: brass wall (or this controller), a rotor in the centre, open space elsewhere. */
     private boolean isBodyRing(int cx, int cz, int y) {
         for (DistillationTowerShape.Offset o : DistillationTowerShape.FULL_R3) {
             BlockPos pos = new BlockPos(cx + o.dx(), y, cz + o.dz());
@@ -382,7 +382,7 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
             if (o.dx() == 0 && o.dz() == 0) {
                 if (!(state.getBlock() instanceof MixerRotorBlock)) return false;
             } else if (DistillationTowerShape.WALL_R3.contains(o)) {
-                if (!pos.equals(worldPosition) && !isSteelShell(pos, state)) return false;
+                if (!pos.equals(worldPosition) && !isShell(state)) return false;
             } else if (!isOpen(state)) {
                 return false;
             }
@@ -390,24 +390,24 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         return true;
     }
 
-    /** Floor or lid: solid steel, except the lid's centre, which is the drive. */
+    /** Floor or lid: solid brass, except the lid's centre, which is the drive. */
     private boolean isSolidLayer(int cx, int cz, int y, boolean lid) {
         for (DistillationTowerShape.Offset o : DistillationTowerShape.FULL_R3) {
             BlockPos pos = new BlockPos(cx + o.dx(), y, cz + o.dz());
             BlockState state = level.getBlockState(pos);
             if (lid && o.dx() == 0 && o.dz() == 0) {
                 if (!state.is(TwoGetherCoreMod.MIXER_DRIVE.get())) return false;
-            } else if (!isSteelShell(pos, state)) {
+            } else if (!isShell(state)) {
                 return false;
             }
         }
         return true;
     }
 
-    /** Steel casing, steel valve, or Mekanism's Structural Glass to see the blades turn. */
-    private boolean isSteelShell(BlockPos pos, BlockState state) {
-        return state.is(TwoGetherCoreMod.DISTILLATION_CASING_STEEL.get())
-                || state.is(TwoGetherCoreMod.DISTILLATION_VALVE_STEEL.get())
+    /** Brass casing, brass valve, or Mekanism's Structural Glass to see the blades turn. */
+    private boolean isShell(BlockState state) {
+        return state.is(TwoGetherCoreMod.MIXER_CASING.get())
+                || state.is(TwoGetherCoreMod.MIXER_VALVE.get())
                 || state.is(STRUCTURAL_GLASS);
     }
 
