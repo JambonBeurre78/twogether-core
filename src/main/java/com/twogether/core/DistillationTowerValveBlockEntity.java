@@ -9,25 +9,24 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
- * A valve slotted into the Distillation Tower wall wherever the player wants
- * IO (matches Mekanism's own valve concept on the Thermal Evaporation Plant).
- * Pure proxy with no configuration: once the controller has validated the
- * structure it stamps its own position into every valve, and from then on any
- * valve accepts pitched_wort or fermentable items in, gives beer out, and
- * carries Mekanism heat through to the controller's capacitor - so thermal
- * conductors connect here rather than to the controller block.
+ * A valve slotted into a multiblock wall wherever the player wants IO. Shared by the
+ * Distillation Tower and the Mixer, so it talks to its controller only through
+ * MultiblockController. Pure proxy with no configuration: once a controller has validated its
+ * structure it stamps its position here, and from then on the valve takes fluids, items, heat
+ * and power in and gives the output fluid back.
  */
 public class DistillationTowerValveBlockEntity extends BlockEntity implements IMekanismHeatHandler {
 
-    private static final int INPUT_TANK = 0;
     private static final int OUTPUT_TANK = 1;
 
     @Nullable
@@ -43,20 +42,23 @@ public class DistillationTowerValveBlockEntity extends BlockEntity implements IM
     }
 
     public void setControllerPos(@Nullable BlockPos controllerPos) {
+        if (Objects.equals(this.controllerPos, controllerPos)) return;
         this.controllerPos = controllerPos;
+        setChanged();
+        // Neighbours (cables, pipes) cache what this block exposes; make them look again now
+        // that there is a machine behind it.
+        if (level != null) level.invalidateCapabilities(worldPosition);
     }
 
     @Nullable
-    public DistillationTowerControllerBlockEntity getController() {
+    public MultiblockController getController() {
         if (controllerPos == null || level == null) return null;
-        if (level.getBlockEntity(controllerPos) instanceof DistillationTowerControllerBlockEntity controller) {
-            return controller;
-        }
-        return null;
+        return level.getBlockEntity(controllerPos) instanceof MultiblockController controller ? controller : null;
     }
 
     private final IFluidHandler fluidCapability = new ValveFluidHandler();
     private final IItemHandler itemCapability = new ValveItemHandler();
+    private final IEnergyStorage energyCapability = new ValveEnergyStorage();
 
     public IFluidHandler getFluidCapability() {
         return fluidCapability;
@@ -66,11 +68,15 @@ public class DistillationTowerValveBlockEntity extends BlockEntity implements IM
         return itemCapability;
     }
 
+    public IEnergyStorage getEnergyCapability() {
+        return energyCapability;
+    }
+
     // ---- IMekanismHeatHandler: heat piped into any valve lands in the controller's capacitor ----
 
     @Override
-    public List<IHeatCapacitor> getHeatCapacitors(Direction side) {
-        DistillationTowerControllerBlockEntity controller = getController();
+    public List<IHeatCapacitor> getHeatCapacitors(@Nullable Direction side) {
+        MultiblockController controller = getController();
         return controller == null ? List.of() : controller.getHeatCapacitors(side);
     }
 
@@ -80,8 +86,8 @@ public class DistillationTowerValveBlockEntity extends BlockEntity implements IM
     }
 
     /**
-     * Both tanks are exposed, so a pipe pushing pitched_wort fills the input and a pipe
-     * pulling takes beer from the output - no side or mode to configure.
+     * Both tanks are exposed, so a pipe pushing an ingredient fills the input and a pipe pulling
+     * takes the product from the output - no side or mode to configure.
      */
     private final class ValveFluidHandler implements IFluidHandler {
         @Override
@@ -91,64 +97,62 @@ public class DistillationTowerValveBlockEntity extends BlockEntity implements IM
 
         @Override
         public FluidStack getFluidInTank(int tank) {
-            DistillationTowerControllerBlockEntity controller = getController();
+            MultiblockController controller = getController();
             if (controller == null) return FluidStack.EMPTY;
             return tank == OUTPUT_TANK ? controller.getOutputTank().getFluid() : controller.getInputTank().getFluid();
         }
 
         @Override
         public int getTankCapacity(int tank) {
-            DistillationTowerControllerBlockEntity controller = getController();
+            MultiblockController controller = getController();
             if (controller == null) return 0;
             return tank == OUTPUT_TANK ? controller.getOutputTank().getCapacity() : controller.getInputTank().getCapacity();
         }
 
         @Override
         public boolean isFluidValid(int tank, FluidStack stack) {
-            DistillationTowerControllerBlockEntity controller = getController();
+            MultiblockController controller = getController();
             if (controller == null) return false;
             return tank == OUTPUT_TANK ? controller.getOutputTank().isFluidValid(stack) : controller.getInputTank().isFluidValid(stack);
         }
 
         @Override
         public int fill(FluidStack resource, FluidAction action) {
-            DistillationTowerControllerBlockEntity controller = getController();
-            if (controller == null) return 0;
-            return controller.getInputTank().fill(resource, action);
+            MultiblockController controller = getController();
+            return controller == null ? 0 : controller.getInputTank().fill(resource, action);
         }
 
         @Override
         public FluidStack drain(FluidStack resource, FluidAction action) {
-            DistillationTowerControllerBlockEntity controller = getController();
-            if (controller == null) return FluidStack.EMPTY;
-            return controller.getOutputTank().drain(resource, action);
+            MultiblockController controller = getController();
+            return controller == null ? FluidStack.EMPTY : controller.getOutputTank().drain(resource, action);
         }
 
         @Override
         public FluidStack drain(int maxDrain, FluidAction action) {
-            DistillationTowerControllerBlockEntity controller = getController();
-            if (controller == null) return FluidStack.EMPTY;
-            return controller.getOutputTank().drain(maxDrain, action);
+            MultiblockController controller = getController();
+            return controller == null ? FluidStack.EMPTY : controller.getOutputTank().drain(maxDrain, action);
         }
     }
 
+    /** Insert-only window onto the controller's input slots. */
     private final class ValveItemHandler implements IItemHandler {
         @Override
         public int getSlots() {
-            return getController() != null ? 1 : 0;
+            MultiblockController controller = getController();
+            return controller == null ? 0 : controller.getInputItems().getSlots();
         }
 
         @Override
         public ItemStack getStackInSlot(int slot) {
-            DistillationTowerControllerBlockEntity controller = getController();
-            return controller == null ? ItemStack.EMPTY : controller.getInputSlot().getStackInSlot(0);
+            MultiblockController controller = getController();
+            return controller == null ? ItemStack.EMPTY : controller.getInputItems().getStackInSlot(slot);
         }
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-            DistillationTowerControllerBlockEntity controller = getController();
-            if (controller == null) return stack;
-            return controller.getInputSlot().insertItem(0, stack, simulate);
+            MultiblockController controller = getController();
+            return controller == null ? stack : controller.getInputItems().insertItem(slot, stack, simulate);
         }
 
         @Override
@@ -158,14 +162,57 @@ public class DistillationTowerValveBlockEntity extends BlockEntity implements IM
 
         @Override
         public int getSlotLimit(int slot) {
-            return 64;
+            MultiblockController controller = getController();
+            return controller == null ? 0 : controller.getInputItems().getSlotLimit(slot);
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
-            DistillationTowerControllerBlockEntity controller = getController();
-            if (controller == null) return false;
-            return controller.getInputSlot().isItemValid(0, stack);
+            MultiblockController controller = getController();
+            return controller != null && controller.getInputItems().isItemValid(slot, stack);
+        }
+    }
+
+    /** Receive-only window onto the controller's power buffer; inert on machines without one. */
+    private final class ValveEnergyStorage implements IEnergyStorage {
+        @Nullable
+        private IEnergyStorage target() {
+            MultiblockController controller = getController();
+            return controller == null ? null : controller.getEnergyStorage();
+        }
+
+        @Override
+        public int receiveEnergy(int toReceive, boolean simulate) {
+            IEnergyStorage target = target();
+            return target == null ? 0 : target.receiveEnergy(toReceive, simulate);
+        }
+
+        @Override
+        public int extractEnergy(int toExtract, boolean simulate) {
+            return 0;
+        }
+
+        @Override
+        public int getEnergyStored() {
+            IEnergyStorage target = target();
+            return target == null ? 0 : target.getEnergyStored();
+        }
+
+        @Override
+        public int getMaxEnergyStored() {
+            IEnergyStorage target = target();
+            return target == null ? 0 : target.getMaxEnergyStored();
+        }
+
+        @Override
+        public boolean canExtract() {
+            return false;
+        }
+
+        @Override
+        public boolean canReceive() {
+            IEnergyStorage target = target();
+            return target != null && target.canReceive();
         }
     }
 

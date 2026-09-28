@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "twogethercore:block/mixer_drive"
+    }
+  }
+}

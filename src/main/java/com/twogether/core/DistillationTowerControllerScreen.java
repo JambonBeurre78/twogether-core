@@ -3,8 +3,6 @@ package com.twogether.core;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BooleanSupplier;
-import java.util.function.IntSupplier;
-import java.util.function.Supplier;
 import mekanism.api.fluid.IExtendedFluidTank;
 import mekanism.client.gui.GuiMekanism;
 import mekanism.client.gui.element.GuiDownArrow;
@@ -24,12 +22,8 @@ import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.UnitDisplayUtils.TemperatureUnit;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -51,8 +45,8 @@ public class DistillationTowerControllerScreen extends GuiMekanism<DistillationT
         inventoryLabelX += 10;
         inventoryLabelY += 2;
         dynamicSlots = true;
-        inputTank = new ClientFluidTankView(() -> fluidById(menu.getData(12)), () -> menu.getData(6), () -> menu.getData(7));
-        outputTank = new ClientFluidTankView(() -> fluidById(menu.getData(13)), () -> menu.getData(8), () -> menu.getData(9));
+        inputTank = new ClientFluidTankView(() -> ClientFluidTankView.fluidById(menu.getData(12)), () -> menu.getData(6), () -> menu.getData(7));
+        outputTank = new ClientFluidTankView(() -> ClientFluidTankView.fluidById(menu.getData(13)), () -> menu.getData(8), () -> menu.getData(9));
     }
 
     @Override
@@ -62,7 +56,8 @@ public class DistillationTowerControllerScreen extends GuiMekanism<DistillationT
               menu.getData(0) != 0 ? MekanismLang.MULTIBLOCK_FORMED.translate() : MekanismLang.MULTIBLOCK_INCOMPLETE.translate(),
               MekanismLang.EVAPORATION_HEIGHT.translate(menu.getData(1)),
               MekanismLang.TEMPERATURE.translate(MekanismUtils.getTemperatureDisplay(menu.getData(5), TemperatureUnit.KELVIN, true)),
-              MekanismLang.FLUID_PRODUCTION.translate(Math.round(lastGain() * 100D) / 100D)
+              MekanismLang.FLUID_PRODUCTION.translate(Math.round(lastGain() * 100D) / 100D),
+              statusLine()
         )).padding(3).clearSpacing());
         addRenderableWidget(new GuiDownArrow(this, 32, 39));
         addRenderableWidget(new GuiDownArrow(this, 156, 39));
@@ -106,10 +101,6 @@ public class DistillationTowerControllerScreen extends GuiMekanism<DistillationT
         return Component.translatable(key).withStyle(ChatFormatting.RED);
     }
 
-    private static Fluid fluidById(int id) {
-        return BuiltInRegistries.FLUID.byId(id);
-    }
-
     private List<IExtendedFluidTank> fluidTanks() {
         return List.of(inputTank, outputTank);
     }
@@ -144,48 +135,5 @@ public class DistillationTowerControllerScreen extends GuiMekanism<DistillationT
         renderTitleTextWithOffset(guiGraphics, inputGauge.getRelativeRight(), outputGauge.getRelativeX());
         renderInventoryText(guiGraphics);
         super.drawForegroundText(guiGraphics, mouseX, mouseY);
-    }
-
-    /** Client-side view of a synced tank: display only, so the mutators are no-ops. */
-    private static final class ClientFluidTankView implements IExtendedFluidTank {
-
-        private final Supplier<Fluid> fluid;
-        private final IntSupplier amountSupplier;
-        private final IntSupplier capacitySupplier;
-
-        ClientFluidTankView(Supplier<Fluid> fluid, IntSupplier amountSupplier, IntSupplier capacitySupplier) {
-            this.fluid = fluid;
-            this.amountSupplier = amountSupplier;
-            this.capacitySupplier = capacitySupplier;
-        }
-
-        @Override
-        public FluidStack getFluid() {
-            int amount = amountSupplier.getAsInt();
-            Fluid contents = fluid.get();
-            return amount <= 0 || contents == Fluids.EMPTY ? FluidStack.EMPTY : new FluidStack(contents, amount);
-        }
-
-        @Override
-        public int getCapacity() {
-            return Math.max(1, capacitySupplier.getAsInt());
-        }
-
-        @Override
-        public boolean isFluidValid(FluidStack stack) {
-            return stack.getFluid() == fluid.get();
-        }
-
-        @Override
-        public void setStack(FluidStack stack) {
-        }
-
-        @Override
-        public void setStackUnchecked(FluidStack stack) {
-        }
-
-        @Override
-        public void onContentsChanged() {
-        }
     }
 }

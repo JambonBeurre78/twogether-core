@@ -13,7 +13,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -26,6 +25,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +43,7 @@ import java.util.Set;
  * single-block Fermenter prototype but as an actual multiblock the player
  * builds and configures IO on freely via the casing blocks.
  */
-public class DistillationTowerControllerBlockEntity extends BlockEntity implements IMekanismHeatHandler, MenuProvider {
+public class DistillationTowerControllerBlockEntity extends BlockEntity implements IMekanismHeatHandler, MenuProvider, MultiblockController {
 
     // Bigger than a bare-minimum value on purpose: a real Mekanism heat network (Thermodynamic
     // Conductors) pushes heat calibrated for their own much larger machines, so a small capacity
@@ -105,18 +105,6 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
     private int progress;
     private Set<BlockPos> shellPositions = new HashSet<>();
 
-    // Client-side display copies, written by containerData.set() when synced from the server menu.
-    private int syncTemperature;
-    private int syncInputAmount;
-    private int syncInputCapacity;
-    private int syncOutputAmount;
-    private int syncOutputCapacity;
-    private int syncDissipation;
-    private int syncTime;
-    private int syncOutputPerCraft;
-    private int syncInputFluid;
-    private int syncOutputFluid;
-    private int syncStatus;
     private int activeStatus = STATUS_NOT_FORMED;
 
     /** Time and yield of the recipe currently loaded in the input tank, for the GUI readout. */
@@ -126,62 +114,30 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
     @Nullable
     private Set<Fluid> acceptedInputs;
 
-    private final ContainerData containerData = new ContainerData() {
-        @Override
-        public int get(int index) {
-            boolean client = level != null && level.isClientSide;
-            return switch (index) {
-                case 0 -> formed ? 1 : 0;
-                case 1 -> bodyLayers;
-                case 2 -> throughputMultiplier;
-                case 3 -> progress;
-                case 4 -> client ? syncTime : activeTimeTicks;
-                case 5 -> client ? syncTemperature : (int) Math.round(heatCapacitor.getTemperature());
-                case 6 -> client ? syncInputAmount : inputTank.getFluidAmount();
-                case 7 -> client ? syncInputCapacity : inputTank.getCapacity();
-                case 8 -> client ? syncOutputAmount : outputTank.getFluidAmount();
-                case 9 -> client ? syncOutputCapacity : outputTank.getCapacity();
-                // Environment loss in K/t, scaled by 1000 so the tiny per-tick value survives int sync.
-                case 10 -> client ? syncDissipation : (int) Math.round(passiveCoolingPerTick() / HEAT_CAPACITY * 1000.0);
-                case 11 -> client ? syncOutputPerCraft : activeOutputPerCraft;
-                // Which fluid is actually in each tank, so the gauges show the real contents
-                // instead of whatever the chain happened to use when the screen was written.
-                case 12 -> client ? syncInputFluid : BuiltInRegistries.FLUID.getId(inputTank.getFluid().getFluid());
-                case 13 -> client ? syncOutputFluid : BuiltInRegistries.FLUID.getId(outputTank.getFluid().getFluid());
-                case 14 -> client ? syncStatus : activeStatus;
-                default -> 0;
-            };
-        }
+    /**
+     * Values shown by the screen, in the index order the screen reads them. Wide so tank
+     * capacities above 32767 mB are not wrapped by vanilla's short-based sync.
+     */
+    private final WideContainerData containerData = new WideContainerData(
+            () -> level != null && level.isClientSide,
+            () -> formed ? 1 : 0,
+            () -> bodyLayers,
+            () -> throughputMultiplier,
+            () -> progress,
+            () -> activeTimeTicks,
+            () -> (int) Math.round(heatCapacitor.getTemperature()),
+            inputTank::getFluidAmount,
+            inputTank::getCapacity,
+            outputTank::getFluidAmount,
+            outputTank::getCapacity,
+            // Environment loss in K/t, scaled by 1000 so the tiny per-tick value survives int sync.
+            () -> (int) Math.round(passiveCoolingPerTick() / HEAT_CAPACITY * 1000.0),
+            () -> activeOutputPerCraft,
+            () -> BuiltInRegistries.FLUID.getId(inputTank.getFluid().getFluid()),
+            () -> BuiltInRegistries.FLUID.getId(outputTank.getFluid().getFluid()),
+            () -> activeStatus);
 
-        @Override
-        public void set(int index, int value) {
-            switch (index) {
-                case 0 -> formed = value != 0;
-                case 1 -> bodyLayers = value;
-                case 2 -> throughputMultiplier = value;
-                case 3 -> progress = value;
-                case 4 -> syncTime = value;
-                case 5 -> syncTemperature = value;
-                case 6 -> syncInputAmount = value;
-                case 7 -> syncInputCapacity = value;
-                case 8 -> syncOutputAmount = value;
-                case 9 -> syncOutputCapacity = value;
-                case 10 -> syncDissipation = value;
-                case 11 -> syncOutputPerCraft = value;
-                case 12 -> syncInputFluid = value;
-                case 13 -> syncOutputFluid = value;
-                case 14 -> syncStatus = value;
-                default -> { }
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return 15;
-        }
-    };
-
-    public ContainerData getContainerData() {
+    public WideContainerData getContainerData() {
         return containerData;
     }
 
@@ -236,6 +192,11 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
     }
 
     public ItemStackHandler getInputSlot() {
+        return inputSlot;
+    }
+
+    @Override
+    public IItemHandler getInputItems() {
         return inputSlot;
     }
 

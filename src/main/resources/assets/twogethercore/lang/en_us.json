@@ -75,5 +75,14 @@
   "item.twogethercore.beer_oat_bucket": "Bucket of Oat Beer",
   "fluid.twogethercore.beer_wheat": "Wheat Beer",
   "block.twogethercore.beer_wheat": "Wheat Beer",
-  "item.twogethercore.beer_wheat_bucket": "Bucket of Wheat Beer"
+  "item.twogethercore.beer_wheat_bucket": "Bucket of Wheat Beer",
+  "block.twogethercore.mixer_controller": "Mixer Controller",
+  "block.twogethercore.mixer_rotor": "Mixer Rotor",
+  "block.twogethercore.mixer_drive": "Mixer Drive",
+  "item.twogethercore.mixer_blade": "Mixer Blade",
+  "gui.twogethercore.mixer.blades": "Blades: %s",
+  "gui.twogethercore.mixer.power": "Power: %s FE/t",
+  "gui.twogethercore.mixer.energy": "%s / %s FE",
+  "gui.twogethercore.status.no_blades": "No blades on the rotor",
+  "gui.twogethercore.status.no_power": "Not enough power"
 }

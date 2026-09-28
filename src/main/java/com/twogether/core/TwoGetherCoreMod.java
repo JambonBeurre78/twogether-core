@@ -18,6 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -406,6 +407,24 @@ public class TwoGetherCoreMod {
     public static final DeferredItem<BlockItem> DISTILLATION_CONTROLLER_STEEL_ITEM =
             ITEMS.registerSimpleBlockItem("distillation_tower_controller_steel", DISTILLATION_CONTROLLER_STEEL);
 
+    // ---- Mixer : cuve octogonale en acier, colonne de rotors a pales au centre ----
+
+    public static final DeferredBlock<MixerControllerBlock> MIXER_CONTROLLER = BLOCKS.register("mixer_controller",
+            () -> new MixerControllerBlock(towerBlockProperties()));
+    public static final DeferredItem<BlockItem> MIXER_CONTROLLER_ITEM =
+            ITEMS.registerSimpleBlockItem("mixer_controller", MIXER_CONTROLLER);
+
+    public static final DeferredBlock<MixerRotorBlock> MIXER_ROTOR = BLOCKS.register("mixer_rotor",
+            () -> new MixerRotorBlock(towerBlockProperties().noOcclusion()));
+    public static final DeferredItem<BlockItem> MIXER_ROTOR_ITEM =
+            ITEMS.registerSimpleBlockItem("mixer_rotor", MIXER_ROTOR);
+
+    public static final DeferredBlock<Block> MIXER_DRIVE = BLOCKS.registerSimpleBlock("mixer_drive", towerBlockProperties());
+    public static final DeferredItem<BlockItem> MIXER_DRIVE_ITEM =
+            ITEMS.registerSimpleBlockItem("mixer_drive", MIXER_DRIVE);
+
+    public static final DeferredItem<Item> MIXER_BLADE = ITEMS.registerSimpleItem("mixer_blade");
+
     public static final DeferredItem<Item> MAGIC_WAND = ITEMS.registerItem("magic_wand",
             props -> new MagicWandItem(props.stacksTo(1)));
 
@@ -434,6 +453,10 @@ public class TwoGetherCoreMod {
                         output.accept(DISTILLATION_VALVE_STEEL_ITEM.get());
                         output.accept(DISTILLATION_CONTROLLER_COPPER_ITEM.get());
                         output.accept(DISTILLATION_CONTROLLER_STEEL_ITEM.get());
+                        output.accept(MIXER_CONTROLLER_ITEM.get());
+                        output.accept(MIXER_ROTOR_ITEM.get());
+                        output.accept(MIXER_DRIVE_ITEM.get());
+                        output.accept(MIXER_BLADE.get());
                         output.accept(MAGIC_WAND.get());
                     })
                     .build());
@@ -452,10 +475,17 @@ public class TwoGetherCoreMod {
             BLOCK_ENTITIES.register("distillation_tower_controller", () -> BlockEntityType.Builder.of(
                     DistillationTowerControllerBlockEntity::new, DISTILLATION_CONTROLLER_COPPER.get(), DISTILLATION_CONTROLLER_STEEL.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MixerControllerBlockEntity>> MIXER_CONTROLLER_BE =
+            BLOCK_ENTITIES.register("mixer_controller", () -> BlockEntityType.Builder.of(
+                    MixerControllerBlockEntity::new, MIXER_CONTROLLER.get()).build(null));
+
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, MODID);
 
     public static final DeferredHolder<MenuType<?>, MenuType<DistillationTowerControllerMenu>> DISTILLATION_CONTROLLER_MENU =
             MENU_TYPES.register("distillation_tower_controller", () -> IMenuTypeExtension.create(DistillationTowerControllerMenu::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<MixerMenu>> MIXER_MENU =
+            MENU_TYPES.register("mixer", () -> IMenuTypeExtension.create(MixerMenu::new));
 
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, MODID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, MODID);
@@ -465,6 +495,12 @@ public class TwoGetherCoreMod {
 
     public static final DeferredHolder<RecipeSerializer<?>, FermentingRecipe.Serializer> FERMENTING_SERIALIZER =
             RECIPE_SERIALIZERS.register("fermenting", FermentingRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<MixingRecipe>> MIXING_TYPE =
+            RECIPE_TYPES.register("mixing", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "mixing")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, MixingRecipe.Serializer> MIXING_SERIALIZER =
+            RECIPE_SERIALIZERS.register("mixing", MixingRecipe.Serializer::new);
 
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS =
             DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, MODID);
@@ -523,6 +559,7 @@ public class TwoGetherCoreMod {
 
     private void registerScreens(RegisterMenuScreensEvent event) {
         event.register(DISTILLATION_CONTROLLER_MENU.get(), DistillationTowerControllerScreen::new);
+        event.register(MIXER_MENU.get(), MixerScreen::new);
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -537,6 +574,8 @@ public class TwoGetherCoreMod {
                 (be, side) -> be.getFluidCapability());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, DISTILLATION_VALVE_BE.get(),
                 (be, side) -> be.getItemCapability());
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, DISTILLATION_VALVE_BE.get(),
+                (be, side) -> be.getEnergyCapability());
         // Heat is taken on the valves, not the controller: conductors hook into the tower wall.
         event.registerBlockEntity(mekanism.common.capabilities.Capabilities.HEAT, DISTILLATION_VALVE_BE.get(),
                 (be, side) -> be);

@@ -62,7 +62,7 @@ public class DistillationTowerControllerMenu extends AbstractContainerMenu {
     }
 
     public int getData(int index) {
-        return controller.getContainerData().get(index);
+        return controller.getContainerData().getValue(index);
     }
 
     @Override

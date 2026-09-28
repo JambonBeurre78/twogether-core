@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "twogethercore:block/mixer_drive_top",
+    "side": "twogethercore:block/mixer_drive_side"
+  }
+}

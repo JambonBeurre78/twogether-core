@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "twogethercore:distillation_tower_casing_steel"
+    },
+    "C": {
+      "tag": "c:circuits/advanced"
+    },
+    "G": {
+      "tag": "c:glass_panes"
+    },
+    "S": {
+      "item": "mekanism:steel_casing"
+    }
+  },
+  "pattern": [
+    "CGC",
+    "#S#",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "twogethercore:mixer_controller"
+  }
+}

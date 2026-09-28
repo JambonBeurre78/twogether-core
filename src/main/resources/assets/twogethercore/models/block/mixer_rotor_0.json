@@ -1,0 +1,78 @@
+{
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "shaft": "twogethercore:block/mixer_rotor",
+    "blade": "twogethercore:item/mixer_blade",
+    "particle": "twogethercore:block/mixer_rotor"
+  },
+  "elements": [
+    {
+      "from": [
+        6,
+        0,
+        6
+      ],
+      "to": [
+        10,
+        16,
+        10
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#shaft"
+        },
+        "south": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#shaft"
+        },
+        "east": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#shaft"
+        },
+        "west": {
+          "uv": [
+            6,
+            0,
+            10,
+            16
+          ],
+          "texture": "#shaft"
+        },
+        "up": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#shaft"
+        },
+        "down": {
+          "uv": [
+            6,
+            6,
+            10,
+            10
+          ],
+          "texture": "#shaft"
+        }
+      }
+    }
+  ]
+}

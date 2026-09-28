@@ -1,0 +1,20 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "farm_and_charm:wild_nettle"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:beer"
+    },
+    "amount": 250
+  },
+  "result": {
+    "id": "twogethercore:beer_nettle",
+    "amount": 250
+  },
+  "time": 100,
+  "energy_per_tick": 20
+}

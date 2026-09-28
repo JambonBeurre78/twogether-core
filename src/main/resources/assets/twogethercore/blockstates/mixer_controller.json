@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "formed=false": {
+      "model": "twogethercore:block/mixer_controller"
+    },
+    "formed=true": {
+      "model": "twogethercore:block/mixer_controller_on"
+    }
+  }
+}

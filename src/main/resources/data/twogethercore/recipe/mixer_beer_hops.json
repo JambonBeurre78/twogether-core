@@ -1,0 +1,20 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "brewery:hops"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:beer"
+    },
+    "amount": 250
+  },
+  "result": {
+    "id": "twogethercore:beer_hops",
+    "amount": 250
+  },
+  "time": 100,
+  "energy_per_tick": 20
+}
