@@ -8,8 +8,7 @@ import java.util.Set;
  * 7x7 bounding box) repeated 1-8 times for the body, sitting on a solid
  * radius-3 floor and closed off by a radius-2 then radius-1 solid cap.
  * Designed from the player's own in-world prototype (screenshot), not
- * hooked into Mekanism's internal multiblock system - see FermenterBlockEntity
- * javadoc for why (no public API for that).
+ * hooked into Mekanism's internal multiblock system, which has no public API.
  */
 final class DistillationTowerShape {
 

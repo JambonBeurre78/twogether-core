@@ -354,14 +354,6 @@ public class TwoGetherCoreMod {
                 .tickRate(5);
     }
 
-    public static final DeferredBlock<FermenterBlock> FERMENTER = BLOCKS.register("fermenter",
-            () -> new FermenterBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.METAL)
-                    .strength(4.0f)
-                    .requiresCorrectToolForDrops()));
-
-    public static final DeferredItem<BlockItem> FERMENTER_ITEM = ITEMS.registerSimpleBlockItem("fermenter", FERMENTER);
-
     // ---- Distillation Tower : multiblock maison (pas d'API Mekanism publique pour ca,
     // voir DistillationTowerControllerBlockEntity), forme fixee par le prototype du joueur.
     // 2 tiers cosmetiques/perf : cuivre (base) et acier inox (plus efficace, via le controleur). ----
@@ -450,7 +442,6 @@ public class TwoGetherCoreMod {
                         output.accept(EMPTY_CAN.get());
                         output.accept(WEDWULL_CAN.get());
                         BEER_VARIANTS.forEach(variant -> output.accept(variant.bucket.get()));
-                        output.accept(FERMENTER_ITEM.get());
                         output.accept(DISTILLATION_CASING_COPPER_ITEM.get());
                         output.accept(DISTILLATION_CASING_STEEL_ITEM.get());
                         output.accept(DISTILLATION_VALVE_COPPER_ITEM.get());
@@ -467,10 +458,6 @@ public class TwoGetherCoreMod {
                     .build());
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
-
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FermenterBlockEntity>> FERMENTER_BE =
-            BLOCK_ENTITIES.register("fermenter", () -> BlockEntityType.Builder.of(
-                    FermenterBlockEntity::new, FERMENTER.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DistillationTowerValveBlockEntity>> DISTILLATION_VALVE_BE =
             BLOCK_ENTITIES.register("distillation_tower_valve", () -> BlockEntityType.Builder.of(
@@ -552,13 +539,6 @@ public class TwoGetherCoreMod {
     }
 
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FERMENTER_BE.get(),
-                (be, side) -> be.getInputSlot());
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, FERMENTER_BE.get(),
-                (be, side) -> be.getFluidCapability());
-        event.registerBlockEntity(mekanism.common.capabilities.Capabilities.HEAT, FERMENTER_BE.get(),
-                (be, side) -> be);
-
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, DISTILLATION_VALVE_BE.get(),
                 (be, side) -> be.getFluidCapability());
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, DISTILLATION_VALVE_BE.get(),

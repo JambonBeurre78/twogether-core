@@ -40,7 +40,7 @@ import java.util.Set;
  * building this). Shape is fixed (see DistillationTowerShape): solid floor,
  * 1-8 hollow octagon-ring body layers, then a solid 2-step taper cap.
  * Bigger body -> more tank capacity and faster throughput, same idea as the
- * single-block Fermenter prototype but as an actual multiblock the player
+ * earlier single-block prototype, but as an actual multiblock the player
  * builds and configures IO on freely via the casing blocks.
  */
 public class DistillationTowerControllerBlockEntity extends BlockEntity implements IMekanismHeatHandler, MenuProvider, MultiblockController {
@@ -54,8 +54,9 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
     // Copper (baseline) vs steel (efficient) tier, picked from which controller block was placed.
     private static final double HEAT_CONSUMED_PER_TICK_COPPER = 0.02;
     private static final double HEAT_CONSUMED_PER_TICK_STEEL = 0.014;
-    private static final double PASSIVE_COOLING_PER_TICK_COPPER = 0.01;
-    private static final double PASSIVE_COOLING_PER_TICK_STEEL = 0.006;
+    // Kelvin lost per tick towards ambient: about 1 K/s for copper, the steel shell holds heat longer.
+    private static final double PASSIVE_COOLING_K_PER_TICK_COPPER = 0.05;
+    private static final double PASSIVE_COOLING_K_PER_TICK_STEEL = 0.03;
     private static final int FERMENT_TIME_TICKS_COPPER = 200;
     private static final int FERMENT_TIME_TICKS_STEEL = 140;
     private static final double STEEL_TIME_FACTOR = (double) FERMENT_TIME_TICKS_STEEL / FERMENT_TIME_TICKS_COPPER;
@@ -131,7 +132,7 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
             outputTank::getFluidAmount,
             outputTank::getCapacity,
             // Environment loss in K/t, scaled by 1000 so the tiny per-tick value survives int sync.
-            () -> (int) Math.round(passiveCoolingPerTick() / HEAT_CAPACITY * 1000.0),
+            () -> (int) Math.round(passiveCoolingPerTick() * 1000.0),
             () -> activeOutputPerCraft,
             () -> BuiltInRegistries.FLUID.getId(inputTank.getFluid().getFluid()),
             () -> BuiltInRegistries.FLUID.getId(outputTank.getFluid().getFluid()),
@@ -160,7 +161,7 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
     }
 
     private double passiveCoolingPerTick() {
-        return isSteelTier() ? PASSIVE_COOLING_PER_TICK_STEEL : PASSIVE_COOLING_PER_TICK_COPPER;
+        return isSteelTier() ? PASSIVE_COOLING_K_PER_TICK_STEEL : PASSIVE_COOLING_K_PER_TICK_COPPER;
     }
 
     private int fermentTimeTicks() {
@@ -245,7 +246,7 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
             return;
         }
 
-        heatCapacitor.coolTowardAmbient(passiveCoolingPerTick());
+        heatCapacitor.coolTowardAmbient(passiveCoolingPerTick() * HEAT_CAPACITY);
 
         FermentingRecipe recipe = findRecipe();
         if (recipe == null) {
