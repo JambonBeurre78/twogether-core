@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "brewery:beer_mug"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 250,
+      "fluid": "twogethercore:beer_nettle"
+    }
+  ],
+  "results": [
+    {
+      "id": "brewery:beer_nettle"
+    }
+  ]
+}

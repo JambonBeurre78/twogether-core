@@ -60,5 +60,20 @@
   "gui.twogethercore.status.not_enough_input": "Not enough input fluid",
   "gui.twogethercore.status.too_cold": "Too cold",
   "gui.twogethercore.status.output_full": "Output tank full",
-  "gui.twogethercore.status.idle": "Idle"
+  "gui.twogethercore.status.idle": "Idle",
+  "fluid.twogethercore.beer_haley": "Haley Beer",
+  "block.twogethercore.beer_haley": "Haley Beer",
+  "item.twogethercore.beer_haley_bucket": "Bucket of Haley Beer",
+  "fluid.twogethercore.beer_hops": "Hops Beer",
+  "block.twogethercore.beer_hops": "Hops Beer",
+  "item.twogethercore.beer_hops_bucket": "Bucket of Hops Beer",
+  "fluid.twogethercore.beer_nettle": "Nettle Beer",
+  "block.twogethercore.beer_nettle": "Nettle Beer",
+  "item.twogethercore.beer_nettle_bucket": "Bucket of Nettle Beer",
+  "fluid.twogethercore.beer_oat": "Oat Beer",
+  "block.twogethercore.beer_oat": "Oat Beer",
+  "item.twogethercore.beer_oat_bucket": "Bucket of Oat Beer",
+  "fluid.twogethercore.beer_wheat": "Wheat Beer",
+  "block.twogethercore.beer_wheat": "Wheat Beer",
+  "item.twogethercore.beer_wheat_bucket": "Bucket of Wheat Beer"
 }

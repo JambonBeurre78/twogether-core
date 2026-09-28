@@ -258,7 +258,17 @@ public class TwoGetherCoreMod {
                     .effect(() -> new MobEffectInstance(MobEffects.JUMP, 600, 0), 1.0F)
                     .build())));
 
-    private static BlockBehaviour.Properties processBlockProperties(MapColor mapColor) {
+    // Optional last step of the beer chain: plain beer mixed with an adjunct becomes the matching
+    // Brewery variant. Without it the chain still ends on plain beer, served as barley beer.
+    public static final ProcessFluid BEER_HALEY = new ProcessFluid("beer_haley", 0xFFB0709A, MapColor.COLOR_PINK);
+    public static final ProcessFluid BEER_HOPS = new ProcessFluid("beer_hops", 0xFFB8B02A, MapColor.COLOR_YELLOW);
+    public static final ProcessFluid BEER_NETTLE = new ProcessFluid("beer_nettle", 0xFF7F9A3A, MapColor.COLOR_GREEN);
+    public static final ProcessFluid BEER_OAT = new ProcessFluid("beer_oat", 0xFFD9B060, MapColor.COLOR_ORANGE);
+    public static final ProcessFluid BEER_WHEAT = new ProcessFluid("beer_wheat", 0xFFF0D060, MapColor.COLOR_YELLOW);
+    public static final java.util.List<ProcessFluid> BEER_VARIANTS =
+            java.util.List.of(BEER_HALEY, BEER_HOPS, BEER_NETTLE, BEER_OAT, BEER_WHEAT);
+
+    static BlockBehaviour.Properties processBlockProperties(MapColor mapColor) {
         return BlockBehaviour.Properties.of()
                 .mapColor(mapColor)
                 .replaceable()
@@ -306,7 +316,7 @@ public class TwoGetherCoreMod {
                 .block(PITCHED_WORT_BLOCK);
     }
 
-    private static FluidType processFluidType(String descriptionId, int tint) {
+    static FluidType processFluidType(String descriptionId, int tint) {
         return new FluidType(FluidType.Properties.create()
                 .descriptionId("fluid.twogethercore." + descriptionId)
                 .viscosity(1000)
@@ -336,7 +346,7 @@ public class TwoGetherCoreMod {
         };
     }
 
-    private static BaseFlowingFluid.Properties processProperties(
+    static BaseFlowingFluid.Properties processProperties(
             DeferredHolder<FluidType, FluidType> type,
             java.util.function.Supplier<? extends Fluid> still,
             java.util.function.Supplier<? extends Fluid> flowing) {
@@ -416,6 +426,7 @@ public class TwoGetherCoreMod {
                         output.accept(WEDWULL_BUCKET.get());
                         output.accept(EMPTY_CAN.get());
                         output.accept(WEDWULL_CAN.get());
+                        BEER_VARIANTS.forEach(variant -> output.accept(variant.bucket.get()));
                         output.accept(FERMENTER_ITEM.get());
                         output.accept(DISTILLATION_CASING_COPPER_ITEM.get());
                         output.accept(DISTILLATION_CASING_STEEL_ITEM.get());

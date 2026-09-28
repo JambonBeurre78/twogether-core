@@ -1,0 +1,19 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "farm_and_charm:wild_nettle"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 250,
+      "fluid": "twogethercore:beer"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "id": "twogethercore:beer_nettle"
+    }
+  ]
+}
