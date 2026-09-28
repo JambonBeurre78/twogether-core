@@ -22,3 +22,19 @@ description='''Mod maison fourre-tout pour le pack TWHOGETHER - fluides, blocs e
     versionRange="[1.21.1]"
     ordering="AFTER"
     side="BOTH"
+
+# The GUIs, heat and recipe display are built on Mekanism; the Mixer's blades are drawn with
+# Mekanism Generators' own turbine model.
+[[dependencies.twogethercore]]
+    modId="mekanism"
+    type="required"
+    versionRange="[10.7,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.twogethercore]]
+    modId="mekanismgenerators"
+    type="required"
+    versionRange="[10.7,)"
+    ordering="AFTER"
+    side="BOTH"

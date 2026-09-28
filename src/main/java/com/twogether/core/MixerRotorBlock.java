@@ -12,8 +12,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -21,19 +24,21 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * One segment of the Mixer's centre shaft. Blades are fitted by right-clicking with a Mixer
- * Blade and taken back with an empty hand - the count lives in the block state, so the model
- * shows them and the controller reads them without a block entity.
+ * Blade and taken back with an empty hand. The block itself is just the shaft; the blades are
+ * drawn by MixerRotorRenderer with Mekanism's turbine model, spinning while ACTIVE - which the
+ * controller sets whenever the Mixer is running.
  */
-public class MixerRotorBlock extends Block {
+public class MixerRotorBlock extends Block implements EntityBlock {
 
     public static final MapCodec<MixerRotorBlock> CODEC = simpleCodec(MixerRotorBlock::new);
     public static final IntegerProperty BLADES = IntegerProperty.create("blades", 0, MixerShape.MAX_BLADES_PER_ROTOR);
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     private static final VoxelShape SHAFT = Block.box(6, 0, 6, 10, 16, 10);
 
     public MixerRotorBlock(Properties properties) {
         super(properties);
-        registerDefaultState(getStateDefinition().any().setValue(BLADES, 0));
+        registerDefaultState(getStateDefinition().any().setValue(BLADES, 0).setValue(ACTIVE, false));
     }
 
     @Override
@@ -43,7 +48,12 @@ public class MixerRotorBlock extends Block {
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(BLADES);
+        builder.add(BLADES, ACTIVE);
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new MixerRotorBlockEntity(pos, state);
     }
 
     @Override

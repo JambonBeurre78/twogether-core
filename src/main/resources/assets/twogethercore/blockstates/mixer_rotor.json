@@ -1,13 +1,7 @@
 {
   "variants": {
-    "blades=0": {
-      "model": "twogethercore:block/mixer_rotor_0"
-    },
-    "blades=1": {
-      "model": "twogethercore:block/mixer_rotor_1"
-    },
-    "blades=2": {
-      "model": "twogethercore:block/mixer_rotor_2"
+    "": {
+      "model": "twogethercore:block/mixer_rotor"
     }
   }
 }

@@ -96,6 +96,11 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
     private int activeTimeTicks;
     private int activeEnergyPerTick;
     private int activeStatus = STATUS_NOT_FORMED;
+    /** Rotor column of the formed structure, bottom to top, so the blades can be set spinning. */
+    private List<BlockPos> rotorPositions = List.of();
+    /** Null until the first sync, so blades saved mid-spin are corrected after a reload. */
+    @Nullable
+    private Boolean rotorsSpinning;
 
     @Nullable
     private Set<Fluid> acceptedFluids;
@@ -185,6 +190,11 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
 
     public void serverTick() {
         if (level == null) return;
+        tickMachine();
+        updateRotors();
+    }
+
+    private void tickMachine() {
         if (!formed || ++ticksSinceRescan >= RESCAN_INTERVAL_TICKS) {
             ticksSinceRescan = 0;
             tryFormStructure();
@@ -234,6 +244,19 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
             craft(recipe);
         }
         setChanged();
+    }
+
+    /** Spins the blades while the Mixer is producing and stops them otherwise; only writes on change. */
+    private void updateRotors() {
+        boolean spinning = formed && activeStatus == STATUS_RUNNING;
+        if (level == null || Boolean.valueOf(spinning).equals(rotorsSpinning)) return;
+        rotorsSpinning = spinning;
+        for (BlockPos pos : rotorPositions) {
+            BlockState state = level.getBlockState(pos);
+            if (state.getBlock() instanceof MixerRotorBlock && state.getValue(MixerRotorBlock.ACTIVE) != spinning) {
+                level.setBlock(pos, state.setValue(MixerRotorBlock.ACTIVE, spinning), 3);
+            }
+        }
     }
 
     private void stop(int status) {
@@ -327,6 +350,9 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
             }
         }
 
+        List<BlockPos> rotors = new ArrayList<>();
+        for (int ry = bottom; ry <= top; ry++) rotors.add(new BlockPos(cx, ry, cz));
+        rotorPositions = rotors;
         bodyLayers = layers;
         blades = bladeCount;
         int capacity = BASE_TANK_MB * MixerShape.FLUID_CELLS_PER_LAYER * layers;
@@ -378,10 +404,17 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         return true;
     }
 
+    /** Steel casing, steel valve, or Mekanism's Structural Glass to see the blades turn. */
     private boolean isSteelShell(BlockPos pos, BlockState state) {
         return state.is(TwoGetherCoreMod.DISTILLATION_CASING_STEEL.get())
-                || state.is(TwoGetherCoreMod.DISTILLATION_VALVE_STEEL.get());
+                || state.is(TwoGetherCoreMod.DISTILLATION_VALVE_STEEL.get())
+                || state.is(STRUCTURAL_GLASS);
     }
+
+    private static final net.minecraft.resources.ResourceLocation STRUCTURAL_GLASS_ID =
+            net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("mekanism", "structural_glass");
+    private static final net.minecraft.world.level.block.Block STRUCTURAL_GLASS =
+            BuiltInRegistries.BLOCK.get(STRUCTURAL_GLASS_ID);
 
     private static boolean isOpen(BlockState state) {
         if (state.isAir()) return true;

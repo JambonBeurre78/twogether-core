@@ -471,6 +471,10 @@ public class TwoGetherCoreMod {
             BLOCK_ENTITIES.register("mixer_controller", () -> BlockEntityType.Builder.of(
                     MixerControllerBlockEntity::new, MIXER_CONTROLLER.get()).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MixerRotorBlockEntity>> MIXER_ROTOR_BE =
+            BLOCK_ENTITIES.register("mixer_rotor", () -> BlockEntityType.Builder.of(
+                    MixerRotorBlockEntity::new, MIXER_ROTOR.get()).build(null));
+
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, MODID);
 
     public static final DeferredHolder<MenuType<?>, MenuType<DistillationTowerControllerMenu>> DISTILLATION_CONTROLLER_MENU =

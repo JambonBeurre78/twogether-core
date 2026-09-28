@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_post",
+  "textures": {
+    "texture": "twogethercore:block/mixer_rotor"
+  }
+}
