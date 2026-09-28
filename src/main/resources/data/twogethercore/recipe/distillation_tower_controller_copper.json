@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": { "item": "twogethercore:distillation_tower_casing_copper" },
+    "B": { "item": "minecraft:bucket" },
+    "C": { "tag": "c:circuits/advanced" },
+    "G": { "tag": "c:glass_panes" }
+  },
+  "pattern": ["CGC", "#B#", "###"],
+  "result": { "count": 1, "id": "twogethercore:distillation_tower_controller_copper" }
+}

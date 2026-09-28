@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "formed=false": { "model": "twogethercore:block/distillation_tower_controller_copper" },
+    "formed=true": { "model": "twogethercore:block/distillation_tower_controller_copper_on" }
+  }
+}

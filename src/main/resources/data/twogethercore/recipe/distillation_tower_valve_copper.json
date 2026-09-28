@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": { "item": "twogethercore:distillation_tower_casing_copper" },
+    "C": { "tag": "c:circuits/advanced" }
+  },
+  "pattern": [" # ", "#C#", " # "],
+  "result": { "count": 1, "id": "twogethercore:distillation_tower_valve_copper" }
+}

@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="Not specified"
+
+[[mods]]
+modId="twogethercore"
+version="0.1.0"
+displayName="TwoGether Core"
+authors="noepa"
+description='''Mod maison fourre-tout pour le pack TWHOGETHER - fluides, blocs et petits gadgets custom.'''
+
+[[dependencies.twogethercore]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1.65,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.twogethercore]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.1]"
+    ordering="AFTER"
+    side="BOTH"

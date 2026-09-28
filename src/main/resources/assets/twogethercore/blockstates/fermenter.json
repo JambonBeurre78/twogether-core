@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "twogethercore:block/fermenter" }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "farm_and_charm:yeast"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 250,
+      "fluid": "twogethercore:concentrated_wort"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "id": "twogethercore:pitched_wort"
+    }
+  ]
+}

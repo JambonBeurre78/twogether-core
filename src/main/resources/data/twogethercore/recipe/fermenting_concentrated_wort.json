@@ -1,0 +1,7 @@
+{
+  "type": "twogethercore:fermenting",
+  "input": { "ingredient": { "fluid": "twogethercore:wort" }, "amount": 1000 },
+  "result": { "id": "twogethercore:concentrated_wort", "amount": 250 },
+  "time": 160,
+  "min_temperature": 400
+}

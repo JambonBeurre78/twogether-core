@@ -1,0 +1,19 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "brewery:hops"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 250,
+      "fluid": "minecraft:water"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "id": "twogethercore:hopped_water"
+    }
+  ]
+}

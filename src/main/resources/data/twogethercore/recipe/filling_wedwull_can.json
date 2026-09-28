@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "twogethercore:empty_can"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 250,
+      "fluid": "twogethercore:wedwull"
+    }
+  ],
+  "results": [
+    {
+      "id": "twogethercore:wedwull_can"
+    }
+  ]
+}

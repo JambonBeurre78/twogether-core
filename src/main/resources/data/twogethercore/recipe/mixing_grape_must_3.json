@@ -1,0 +1,23 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "vinery:taiga_grapes_red"
+    },
+    {
+      "item": "vinery:taiga_grapes_red"
+    },
+    {
+      "item": "vinery:taiga_grapes_red"
+    },
+    {
+      "item": "vinery:taiga_grapes_red"
+    }
+  ],
+  "results": [
+    {
+      "amount": 250,
+      "id": "twogethercore:grape_must"
+    }
+  ]
+}

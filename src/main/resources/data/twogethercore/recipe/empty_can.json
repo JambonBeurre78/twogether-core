@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": { "tag": "c:nuggets/iron" }
+  },
+  "pattern": ["N N", "N N", "NNN"],
+  "result": { "count": 4, "id": "twogethercore:empty_can" }
+}

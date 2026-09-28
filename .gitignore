@@ -1,0 +1,22 @@
+# Gradle (the build directory itself lives in %LOCALAPPDATA%, see build.gradle)
+.gradle/
+build/
+run/
+out/
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+bin/
+
+# Reference dumps pulled from other mods while writing recipes - not part of the source
+ref_*.js
+*_lang.json
+*_preview.png
+water_bucket.png
+kubejs-mekanism.jar
+
+# Not used by the build
+libs/jei-*.jar

@@ -1,0 +1,53 @@
+plugins {
+    id 'eclipse'
+    id 'net.neoforged.moddev' version '1.0.20'
+}
+
+version = '0.1.0'
+base.archivesName = "twogethercore"
+
+// Le projet vit dans OneDrive : la synchro verrouille par intermittence les fichiers de
+// build pendant que Gradle les recree ("Failed to clean up stale outputs"). Les artefacts
+// sortent donc du dossier synchronise - seules les sources restent sauvegardees.
+layout.buildDirectory = file("${System.getenv('LOCALAPPDATA')}/twogethercore-build")
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = "21.1.235"
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        twogethercore {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compileOnly files('libs/Mekanism-1.21.1-10.7.19.85.jar')
+    compileOnly files('libs/emi-1.1.24+1.21.1+neoforge.jar')
+}

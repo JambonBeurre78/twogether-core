@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "twogethercore:block/distillation_tower_controller_copper"
+  }
+}

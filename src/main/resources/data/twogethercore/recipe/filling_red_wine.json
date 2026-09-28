@@ -1,0 +1,18 @@
+{
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "vinery:wine_bottle"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 250,
+      "fluid": "twogethercore:wine"
+    }
+  ],
+  "results": [
+    {
+      "id": "vinery:red_wine"
+    }
+  ]
+}
