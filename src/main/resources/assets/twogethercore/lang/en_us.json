@@ -84,5 +84,8 @@
   "gui.twogethercore.mixer.power": "Power: %s FE/t",
   "gui.twogethercore.mixer.energy": "%s / %s FE",
   "gui.twogethercore.status.no_blades": "No blades on the rotor",
-  "gui.twogethercore.status.no_power": "Not enough power"
+  "gui.twogethercore.status.no_power": "Not enough power",
+  "emi.category.twogethercore.mixing": "Mixing",
+  "emi.twogethercore.mixing.energy": "%s FE/t per blade",
+  "emi.twogethercore.mixing.cold": "No heat needed"
 }

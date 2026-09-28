@@ -16,6 +16,11 @@ public class TwoGetherEmiPlugin implements EmiPlugin {
             EmiStack.of(TwoGetherCoreMod.DISTILLATION_CONTROLLER_COPPER.get()),
             EmiStack.of(TwoGetherCoreMod.DISTILLATION_CONTROLLER_COPPER.get()));
 
+    public static final MekanismEmiRecipeCategory MIXING = new MekanismEmiRecipeCategory(
+            MixingRecipeViewerType.INSTANCE,
+            EmiStack.of(TwoGetherCoreMod.MIXER_CONTROLLER.get()),
+            EmiStack.of(TwoGetherCoreMod.MIXER_CONTROLLER.get()));
+
     @Override
     public void register(EmiRegistry registry) {
         registry.addCategory(FERMENTING);
@@ -25,6 +30,13 @@ public class TwoGetherEmiPlugin implements EmiPlugin {
         for (RecipeHolder<FermentingRecipe> holder :
                 registry.getRecipeManager().getAllRecipesFor(TwoGetherCoreMod.FERMENTING_TYPE.get())) {
             registry.addRecipe(new FermentingEmiRecipe(FERMENTING, holder));
+        }
+
+        registry.addCategory(MIXING);
+        registry.addWorkstation(MIXING, EmiStack.of(TwoGetherCoreMod.MIXER_CONTROLLER.get()));
+        for (RecipeHolder<MixingRecipe> holder :
+                registry.getRecipeManager().getAllRecipesFor(TwoGetherCoreMod.MIXING_TYPE.get())) {
+            registry.addRecipe(new MixingEmiRecipe(MIXING, holder));
         }
     }
 }
