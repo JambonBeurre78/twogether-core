@@ -1,0 +1,15 @@
+{
+  "type": "twogethercore:fermenting",
+  "input": {
+    "ingredient": {
+      "fluid": "twogethercore:red_savanna_grape_must"
+    },
+    "amount": 250
+  },
+  "result": {
+    "id": "twogethercore:red_savanna_wine",
+    "amount": 250
+  },
+  "time": 280,
+  "min_temperature": 340
+}

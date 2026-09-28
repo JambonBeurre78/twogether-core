@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vinery"
+    }
+  ],
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "vinery:wine_bottle"
+    },
+    {
+      "item": "vinery:cherry"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:wine"
+    },
+    "amount": 375
+  },
+  "result_item": {
+    "id": "vinery:cherry_wine",
+    "count": 1
+  },
+  "time": 200,
+  "energy_per_tick": 20
+}

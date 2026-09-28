@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vinery"
+    }
+  ],
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "vinery:wine_bottle"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:red_jungle_wine"
+    },
+    "amount": 200
+  },
+  "result_item": {
+    "id": "vinery:stal_wine",
+    "count": 1
+  },
+  "time": 200,
+  "energy_per_tick": 20
+}

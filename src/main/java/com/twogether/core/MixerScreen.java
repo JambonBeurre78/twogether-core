@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import mekanism.api.fluid.IExtendedFluidTank;
 import mekanism.client.gui.GuiMekanism;
+import mekanism.client.gui.element.GuiDownArrow;
 import mekanism.client.gui.element.GuiElement;
 import mekanism.client.gui.element.GuiInnerScreen;
 import mekanism.client.gui.element.bar.GuiBar.IBarInfoHandler;
@@ -42,8 +43,10 @@ public class MixerScreen extends GuiMekanism<MixerMenu> {
     public MixerScreen(MixerMenu container, Inventory inv, Component title) {
         super(container, inv, title);
         imageWidth += 20;
+        // Taller than Mekanism's default by the 20 pixels the product slot needs.
+        imageHeight += 20;
         inventoryLabelX += 10;
-        inventoryLabelY += 2;
+        inventoryLabelY += 22;
         dynamicSlots = true;
         inputTank = new ClientFluidTankView(() -> ClientFluidTankView.fluidById(menu.getData(13)), () -> menu.getData(6), () -> menu.getData(7));
         outputTank = new ClientFluidTankView(() -> ClientFluidTankView.fluidById(menu.getData(14)), () -> menu.getData(8), () -> menu.getData(9));
@@ -59,6 +62,8 @@ public class MixerScreen extends GuiMekanism<MixerMenu> {
                 Component.translatable("gui.twogethercore.mixer.power", menu.getData(12)),
                 statusLine()
         )).padding(3).clearSpacing());
+
+        addRenderableWidget(new GuiDownArrow(this, 41, 56));
 
         addRenderableWidget(new GuiHorizontalRateBar(this, new IBarInfoHandler() {
             @Override

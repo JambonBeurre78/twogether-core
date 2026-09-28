@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vinery"
+    }
+  ],
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "vinery:wine_bottle"
+    },
+    {
+      "item": "minecraft:kelp"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:white_savanna_wine"
+    },
+    "amount": 350
+  },
+  "result_item": {
+    "id": "vinery:kelp_cider",
+    "count": 1
+  },
+  "time": 200,
+  "energy_per_tick": 20
+}

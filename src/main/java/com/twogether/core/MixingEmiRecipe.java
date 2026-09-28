@@ -30,6 +30,9 @@ import java.util.List;
 public class MixingEmiRecipe extends MekanismEmiHolderRecipe<MixingRecipe> {
 
     private final MixingRecipe mixing;
+    /** Index of each product among the recipe's outputs, or -1 when the recipe has none of that kind. */
+    private final int fluidOutput;
+    private final int itemOutput;
 
     public MixingEmiRecipe(MekanismEmiRecipeCategory category, RecipeHolder<MixingRecipe> holder) {
         super(category, holder);
@@ -39,7 +42,11 @@ public class MixingEmiRecipe extends MekanismEmiHolderRecipe<MixingRecipe> {
         }
         // The fluid always sits right after the items, so the gauge can find it by index.
         mixing.fluidInput().ifPresentOrElse(fluid -> addInputDefinition(FluidStackIngredient.of(fluid)), this::addEmptyInput);
-        addFluidOutputDefinition(List.of(mixing.result()));
+        int outputs = 0;
+        if (!mixing.result().isEmpty()) addFluidOutputDefinition(List.of(mixing.result()));
+        fluidOutput = mixing.result().isEmpty() ? -1 : outputs++;
+        if (!mixing.resultItem().isEmpty()) addItemOutputDefinition(List.of(mixing.resultItem()));
+        itemOutput = mixing.resultItem().isEmpty() ? -1 : outputs;
     }
 
     @Override
@@ -53,10 +60,13 @@ public class MixingEmiRecipe extends MekanismEmiHolderRecipe<MixingRecipe> {
         }
 
         initTank(widgets, addElement(widgets, GuiFluidGauge.getDummy(GaugeType.STANDARD, this, 6, 13)), input(items));
-        initTank(widgets, addElement(widgets, GuiFluidGauge.getDummy(GaugeType.STANDARD, this, 158, 13)), output(0));
+        GuiFluidGauge outputGauge = addElement(widgets, GuiFluidGauge.getDummy(GaugeType.STANDARD, this, 158, 13));
+        if (fluidOutput >= 0) initTank(widgets, outputGauge, output(fluidOutput));
 
         addElement(widgets, new GuiInnerScreen(this, 68, 19, 70, 40, this::screenLines).padding(3).clearSpacing());
-        addElement(widgets, new GuiDownArrow(this, 142, 39));
+        // A bottled product takes the arrow's place between the screen and the gauge.
+        if (itemOutput >= 0) addSlot(widgets, SlotType.OUTPUT, 139, 36, output(itemOutput));
+        else addElement(widgets, new GuiDownArrow(this, 142, 39));
         if (mixing.minTemperature() > 0) {
             // Shown full: this is the temperature the recipe asks for, not a live reading.
             addElement(widgets, new GuiHorizontalRateBar(this, RecipeViewerUtils.FULL_BAR, 68, 63));

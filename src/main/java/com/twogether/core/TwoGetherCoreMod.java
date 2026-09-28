@@ -265,6 +265,34 @@ public class TwoGetherCoreMod {
     public static final java.util.List<ProcessFluid> BEER_VARIANTS =
             java.util.List.of(BEER_HALEY, BEER_HOPS, BEER_NETTLE, BEER_OAT, BEER_WHEAT);
 
+    // One must and one base wine per Vinery juice type, so each Vinery wine can be bottled from
+    // the juice it asks for. Plain red grapes keep the original grape_must and wine.
+    public static final ProcessFluid RED_JUNGLE_MUST = new ProcessFluid("red_jungle_grape_must", 0xFF5A1848, MapColor.COLOR_PURPLE);
+    public static final ProcessFluid RED_JUNGLE_WINE = new ProcessFluid("red_jungle_wine", 0xFF631040, MapColor.COLOR_PURPLE);
+    public static final ProcessFluid RED_SAVANNA_MUST = new ProcessFluid("red_savanna_grape_must", 0xFF8A2A2A, MapColor.COLOR_RED);
+    public static final ProcessFluid RED_SAVANNA_WINE = new ProcessFluid("red_savanna_wine", 0xFF8E1A20, MapColor.COLOR_RED);
+    public static final ProcessFluid RED_TAIGA_MUST = new ProcessFluid("red_taiga_grape_must", 0xFF4A1230, MapColor.TERRACOTTA_PURPLE);
+    public static final ProcessFluid RED_TAIGA_WINE = new ProcessFluid("red_taiga_wine", 0xFF4E0A22, MapColor.TERRACOTTA_PURPLE);
+    public static final ProcessFluid WHITE_MUST = new ProcessFluid("white_grape_must", 0xFFC8C060, MapColor.COLOR_YELLOW);
+    public static final ProcessFluid WHITE_WINE = new ProcessFluid("white_wine", 0xFFE0D070, MapColor.COLOR_YELLOW);
+    public static final ProcessFluid WHITE_JUNGLE_MUST = new ProcessFluid("white_jungle_grape_must", 0xFFA8C050, MapColor.COLOR_LIGHT_GREEN);
+    public static final ProcessFluid WHITE_JUNGLE_WINE = new ProcessFluid("white_jungle_wine", 0xFFC8D860, MapColor.COLOR_LIGHT_GREEN);
+    public static final ProcessFluid WHITE_SAVANNA_MUST = new ProcessFluid("white_savanna_grape_must", 0xFFD0A850, MapColor.GOLD);
+    public static final ProcessFluid WHITE_SAVANNA_WINE = new ProcessFluid("white_savanna_wine", 0xFFE8C060, MapColor.GOLD);
+    public static final ProcessFluid WHITE_TAIGA_MUST = new ProcessFluid("white_taiga_grape_must", 0xFFB8C8A0, MapColor.SAND);
+    public static final ProcessFluid WHITE_TAIGA_WINE = new ProcessFluid("white_taiga_wine", 0xFFD8E0B8, MapColor.SAND);
+    public static final ProcessFluid APPLE_MUST = new ProcessFluid("apple_must", 0xFFC89A40, MapColor.COLOR_ORANGE);
+    public static final ProcessFluid APPLE_WINE = new ProcessFluid("hard_cider", 0xFFD8A030, MapColor.COLOR_ORANGE);
+    public static final java.util.List<ProcessFluid> WINE_FLUIDS = java.util.List.of(
+            RED_JUNGLE_MUST, RED_JUNGLE_WINE,
+            RED_SAVANNA_MUST, RED_SAVANNA_WINE,
+            RED_TAIGA_MUST, RED_TAIGA_WINE,
+            WHITE_MUST, WHITE_WINE,
+            WHITE_JUNGLE_MUST, WHITE_JUNGLE_WINE,
+            WHITE_SAVANNA_MUST, WHITE_SAVANNA_WINE,
+            WHITE_TAIGA_MUST, WHITE_TAIGA_WINE,
+            APPLE_MUST, APPLE_WINE);
+
     static BlockBehaviour.Properties processBlockProperties(MapColor mapColor) {
         return BlockBehaviour.Properties.of()
                 .mapColor(mapColor)
@@ -442,6 +470,7 @@ public class TwoGetherCoreMod {
                         output.accept(EMPTY_CAN.get());
                         output.accept(WEDWULL_CAN.get());
                         BEER_VARIANTS.forEach(variant -> output.accept(variant.bucket.get()));
+                        WINE_FLUIDS.forEach(fluid -> output.accept(fluid.bucket.get()));
                         output.accept(DISTILLATION_CASING_COPPER_ITEM.get());
                         output.accept(DISTILLATION_CASING_STEEL_ITEM.get());
                         output.accept(DISTILLATION_VALVE_COPPER_ITEM.get());

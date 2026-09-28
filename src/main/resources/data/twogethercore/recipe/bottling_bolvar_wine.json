@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vinery"
+    }
+  ],
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:honey_bottle"
+    },
+    {
+      "item": "vinery:cherry"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:red_taiga_wine"
+    },
+    "amount": 150
+  },
+  "result_item": {
+    "id": "vinery:bolvar_wine",
+    "count": 1
+  },
+  "time": 200,
+  "energy_per_tick": 20
+}

@@ -135,41 +135,56 @@ public class DistillationTowerValveBlockEntity extends BlockEntity implements IM
         }
     }
 
-    /** Insert-only window onto the controller's input slots. */
+    /**
+     * The controller's input slots followed by its output slots. Items can only be pushed into
+     * the first and pulled from the second, so a hopper feeds ingredients and a pipe collects
+     * the bottles without any side configuration.
+     */
     private final class ValveItemHandler implements IItemHandler {
         @Override
         public int getSlots() {
             MultiblockController controller = getController();
-            return controller == null ? 0 : controller.getInputItems().getSlots();
+            return controller == null ? 0 : controller.getInputItems().getSlots() + controller.getOutputItems().getSlots();
         }
 
         @Override
         public ItemStack getStackInSlot(int slot) {
             MultiblockController controller = getController();
-            return controller == null ? ItemStack.EMPTY : controller.getInputItems().getStackInSlot(slot);
+            if (controller == null) return ItemStack.EMPTY;
+            int inputs = controller.getInputItems().getSlots();
+            return slot < inputs ? controller.getInputItems().getStackInSlot(slot)
+                    : controller.getOutputItems().getStackInSlot(slot - inputs);
         }
 
         @Override
         public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
             MultiblockController controller = getController();
-            return controller == null ? stack : controller.getInputItems().insertItem(slot, stack, simulate);
+            if (controller == null || slot >= controller.getInputItems().getSlots()) return stack;
+            return controller.getInputItems().insertItem(slot, stack, simulate);
         }
 
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
-            return ItemStack.EMPTY;
+            MultiblockController controller = getController();
+            if (controller == null) return ItemStack.EMPTY;
+            int inputs = controller.getInputItems().getSlots();
+            return slot < inputs ? ItemStack.EMPTY : controller.getOutputItems().extractItem(slot - inputs, amount, simulate);
         }
 
         @Override
         public int getSlotLimit(int slot) {
             MultiblockController controller = getController();
-            return controller == null ? 0 : controller.getInputItems().getSlotLimit(slot);
+            if (controller == null) return 0;
+            int inputs = controller.getInputItems().getSlots();
+            return slot < inputs ? controller.getInputItems().getSlotLimit(slot)
+                    : controller.getOutputItems().getSlotLimit(slot - inputs);
         }
 
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             MultiblockController controller = getController();
-            return controller != null && controller.getInputItems().isItemValid(slot, stack);
+            return controller != null && slot < controller.getInputItems().getSlots()
+                    && controller.getInputItems().isItemValid(slot, stack);
         }
     }
 

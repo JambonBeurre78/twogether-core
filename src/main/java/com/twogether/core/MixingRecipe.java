@@ -1,6 +1,7 @@
 package com.twogether.core;
 
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
@@ -22,12 +23,14 @@ import java.util.Optional;
 
 /**
  * What the Mixer does: solid ingredients (one of each consumed per batch, taken from a shared
- * pool so four grapes can sit in one slot), an optional fluid, and a fluid out. Energy is per
- * tick at one blade; the controller scales speed and draw with the blade count. A non-zero
- * minimum temperature makes it a heated recipe, like Create's heated mixing.
+ * pool so four grapes can sit in one slot), an optional fluid, and a fluid and/or an item out -
+ * the item side is what bottles wine or cans WEDWULL. Energy is per tick at one blade; the
+ * controller scales speed and draw with the blade count. A non-zero minimum temperature makes it
+ * a heated recipe, like Create's heated mixing.
  */
 public record MixingRecipe(List<Ingredient> ingredients, Optional<SizedFluidIngredient> fluidInput,
-                           FluidStack result, int time, int energyPerTick, double minTemperature)
+                           FluidStack result, ItemStack resultItem, int time, int energyPerTick,
+                           double minTemperature)
         implements Recipe<MixingRecipe.Input> {
 
     public record Input(FluidStack fluid, List<ItemStack> items) implements RecipeInput {
@@ -109,23 +112,39 @@ public record MixingRecipe(List<Ingredient> ingredients, Optional<SizedFluidIngr
 
     public static class Serializer implements RecipeSerializer<MixingRecipe> {
 
-        private static final MapCodec<MixingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        private static final MapCodec<MixingRecipe> FIELDS = RecordCodecBuilder.mapCodec(instance -> instance.group(
                 Ingredient.LIST_CODEC_NONEMPTY.fieldOf("ingredients").forGetter(MixingRecipe::ingredients),
                 SizedFluidIngredient.NESTED_CODEC.optionalFieldOf("fluid").forGetter(MixingRecipe::fluidInput),
-                FluidStack.CODEC.fieldOf("result").forGetter(MixingRecipe::result),
+                FluidStack.OPTIONAL_CODEC.optionalFieldOf("result", FluidStack.EMPTY).forGetter(MixingRecipe::result),
+                ItemStack.OPTIONAL_CODEC.optionalFieldOf("result_item", ItemStack.EMPTY).forGetter(MixingRecipe::resultItem),
                 Codec.INT.optionalFieldOf("time", 100).forGetter(MixingRecipe::time),
                 Codec.INT.optionalFieldOf("energy_per_tick", 20).forGetter(MixingRecipe::energyPerTick),
                 Codec.DOUBLE.optionalFieldOf("min_temperature", 0.0).forGetter(MixingRecipe::minTemperature)
         ).apply(instance, MixingRecipe::new));
 
-        private static final StreamCodec<RegistryFriendlyByteBuf, MixingRecipe> STREAM_CODEC = StreamCodec.composite(
-                Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()), MixingRecipe::ingredients,
-                ByteBufCodecs.optional(SizedFluidIngredient.STREAM_CODEC), MixingRecipe::fluidInput,
-                FluidStack.STREAM_CODEC, MixingRecipe::result,
-                ByteBufCodecs.VAR_INT, MixingRecipe::time,
-                ByteBufCodecs.VAR_INT, MixingRecipe::energyPerTick,
-                ByteBufCodecs.DOUBLE, MixingRecipe::minTemperature,
-                MixingRecipe::new);
+        private static final MapCodec<MixingRecipe> CODEC = FIELDS.validate(recipe -> recipe.result().isEmpty() && recipe.resultItem().isEmpty()
+                ? DataResult.error(() -> "A mixing recipe needs a 'result' fluid, a 'result_item', or both")
+                : DataResult.success(recipe));
+
+        // Written by hand: StreamCodec.composite tops out at six fields and this recipe has seven.
+        private static final StreamCodec<RegistryFriendlyByteBuf, MixingRecipe> STREAM_CODEC = StreamCodec.of(
+                (buf, recipe) -> {
+                    Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()).encode(buf, recipe.ingredients());
+                    ByteBufCodecs.optional(SizedFluidIngredient.STREAM_CODEC).encode(buf, recipe.fluidInput());
+                    FluidStack.OPTIONAL_STREAM_CODEC.encode(buf, recipe.result());
+                    ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, recipe.resultItem());
+                    buf.writeVarInt(recipe.time());
+                    buf.writeVarInt(recipe.energyPerTick());
+                    buf.writeDouble(recipe.minTemperature());
+                },
+                buf -> new MixingRecipe(
+                        Ingredient.CONTENTS_STREAM_CODEC.apply(ByteBufCodecs.list()).decode(buf),
+                        ByteBufCodecs.optional(SizedFluidIngredient.STREAM_CODEC).decode(buf),
+                        FluidStack.OPTIONAL_STREAM_CODEC.decode(buf),
+                        ItemStack.OPTIONAL_STREAM_CODEC.decode(buf),
+                        buf.readVarInt(),
+                        buf.readVarInt(),
+                        buf.readDouble()));
 
         @Override
         public MapCodec<MixingRecipe> codec() {

@@ -23,6 +23,13 @@ public interface MultiblockController {
     /** Items pushed in through a valve (hoppers, pipes). */
     IItemHandler getInputItems();
 
+    /** Items a valve can hand out; none on machines that only produce fluid. */
+    default IItemHandler getOutputItems() {
+        return NO_ITEMS;
+    }
+
+    IItemHandler NO_ITEMS = new net.neoforged.neoforge.items.ItemStackHandler(0);
+
     List<IHeatCapacitor> getHeatCapacitors(@Nullable Direction side);
 
     /** Null when the machine runs on heat alone. */

@@ -9,20 +9,25 @@
       "modid": "vinery"
     }
   ],
-  "type": "create:filling",
+  "type": "create:mixing",
   "ingredients": [
     {
-      "item": "vinery:wine_bottle"
+      "item": "vinery:red_grape"
     },
     {
-      "type": "neoforge:single",
-      "amount": 250,
-      "fluid": "twogethercore:wine"
+      "item": "vinery:red_grape"
+    },
+    {
+      "item": "vinery:red_grape"
+    },
+    {
+      "item": "vinery:red_grape"
     }
   ],
   "results": [
     {
-      "id": "vinery:red_wine"
+      "id": "twogethercore:grape_must",
+      "amount": 250
     }
   ]
 }

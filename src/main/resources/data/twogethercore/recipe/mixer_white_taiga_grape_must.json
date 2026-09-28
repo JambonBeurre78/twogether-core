@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vinery"
+    }
+  ],
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "vinery:taiga_grapes_white"
+    },
+    {
+      "item": "vinery:taiga_grapes_white"
+    },
+    {
+      "item": "vinery:taiga_grapes_white"
+    },
+    {
+      "item": "vinery:taiga_grapes_white"
+    }
+  ],
+  "result": {
+    "id": "twogethercore:white_taiga_grape_must",
+    "amount": 250
+  },
+  "time": 100,
+  "energy_per_tick": 20
+}

@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vinery"
+    }
+  ],
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "vinery:taiga_grapes_red"
+    },
+    {
+      "item": "vinery:taiga_grapes_red"
+    },
+    {
+      "item": "vinery:taiga_grapes_red"
+    },
+    {
+      "item": "vinery:taiga_grapes_red"
+    }
+  ],
+  "results": [
+    {
+      "id": "twogethercore:red_taiga_grape_must",
+      "amount": 250
+    }
+  ]
+}

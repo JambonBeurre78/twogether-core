@@ -12,22 +12,22 @@
   "type": "create:mixing",
   "ingredients": [
     {
-      "item": "vinery:red_grape"
+      "item": "vinery:jungle_grapes_red"
     },
     {
-      "item": "vinery:red_grape"
+      "item": "vinery:jungle_grapes_red"
     },
     {
-      "item": "vinery:red_grape"
+      "item": "vinery:jungle_grapes_red"
     },
     {
-      "item": "vinery:red_grape"
+      "item": "vinery:jungle_grapes_red"
     }
   ],
   "results": [
     {
-      "amount": 250,
-      "id": "twogethercore:grape_must"
+      "id": "twogethercore:red_jungle_grape_must",
+      "amount": 250
     }
   ]
 }

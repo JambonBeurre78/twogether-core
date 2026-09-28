@@ -10,8 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 /**
- * Four ingredient slots in a 2x2 block between the input gauge and the screen, and the player
- * inventory at the same Mekanism offset as the tower, so both machines line up.
+ * Four ingredient slots in a 2x2 block between the input gauge and the screen, the product slot
+ * under them, and the player inventory below that.
  *
  * <p>Data layout: 0=formed, 1=bodyLayers, 2=blades, 3=progress, 4=time, 5=temperature (K),
  * 6/7=input amount/capacity, 8/9=output amount/capacity, 10/11=energy stored/max,
@@ -21,9 +21,15 @@ public class MixerMenu extends AbstractContainerMenu {
 
     public static final int SLOT_X = 28;
     public static final int SLOT_Y = 20;
+    /** The product slot sits centred under the 2x2 ingredient grid. */
+    public static final int OUTPUT_X = 37;
+    public static final int OUTPUT_Y = 67;
+    /** 20 pixels lower than Mekanism's usual 84, to make room for the product slot. */
     private static final int INVENTORY_X = 18;
-    private static final int INVENTORY_Y = 84;
-    private static final int MACHINE_SLOTS = MixerControllerBlockEntity.INPUT_SLOTS;
+    private static final int INVENTORY_Y = 104;
+    private static final int INPUT_SLOTS = MixerControllerBlockEntity.INPUT_SLOTS;
+    /** The ingredient slots followed by the product slot. */
+    private static final int MACHINE_SLOTS = INPUT_SLOTS + 1;
 
     private final MixerControllerBlockEntity controller;
 
@@ -31,9 +37,15 @@ public class MixerMenu extends AbstractContainerMenu {
         super(TwoGetherCoreMod.MIXER_MENU.get(), containerId);
         this.controller = controller;
 
-        for (int i = 0; i < MACHINE_SLOTS; i++) {
+        for (int i = 0; i < INPUT_SLOTS; i++) {
             addSlot(new SlotItemHandler(controller.getItemSlots(), i, SLOT_X + (i % 2) * 18, SLOT_Y + (i / 2) * 18));
         }
+        addSlot(new SlotItemHandler(controller.getOutputSlot(), 0, OUTPUT_X, OUTPUT_Y) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return false;
+            }
+        });
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(new Slot(playerInventory, col + row * 9 + 9, INVENTORY_X + col * 18, INVENTORY_Y + row * 18));
@@ -70,7 +82,7 @@ public class MixerMenu extends AbstractContainerMenu {
         ItemStack copy = original.copy();
         if (index < MACHINE_SLOTS) {
             if (!moveItemStackTo(original, MACHINE_SLOTS, MACHINE_SLOTS + 36, true)) return ItemStack.EMPTY;
-        } else if (!moveItemStackTo(original, 0, MACHINE_SLOTS, false)) {
+        } else if (!moveItemStackTo(original, 0, INPUT_SLOTS, false)) {
             return ItemStack.EMPTY;
         }
         if (original.isEmpty()) slot.set(ItemStack.EMPTY);

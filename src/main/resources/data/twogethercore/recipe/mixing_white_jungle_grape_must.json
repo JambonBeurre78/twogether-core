@@ -1,0 +1,33 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    },
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vinery"
+    }
+  ],
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "vinery:jungle_grapes_white"
+    },
+    {
+      "item": "vinery:jungle_grapes_white"
+    },
+    {
+      "item": "vinery:jungle_grapes_white"
+    },
+    {
+      "item": "vinery:jungle_grapes_white"
+    }
+  ],
+  "results": [
+    {
+      "id": "twogethercore:white_jungle_grape_must",
+      "amount": 250
+    }
+  ]
+}

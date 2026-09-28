@@ -75,6 +75,14 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         }
     };
 
+    /** Where bottled or canned products land; valves can pull them out for automation. */
+    private final ItemStackHandler outputItems = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            setChanged();
+        }
+    };
+
     /** Accepts whatever a mixing recipe can take as its fluid, so adding a recipe is enough. */
     private final FluidTank inputTank = new FluidTank(BASE_TANK_MB, this::isRecipeFluid) {
         @Override
@@ -157,6 +165,10 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         return inputItems;
     }
 
+    public ItemStackHandler getOutputSlot() {
+        return outputItems;
+    }
+
     public IFluidHandler getFluidCapability() {
         return fluidCapability;
     }
@@ -176,6 +188,11 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
     @Override
     public IItemHandler getInputItems() {
         return inputItems;
+    }
+
+    @Override
+    public IItemHandler getOutputItems() {
+        return outputItems;
     }
 
     @Override
@@ -337,7 +354,7 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         boolean heated = recipe.minTemperature() > 0;
         boolean hot = !heated || heatCapacitor.getTemperature() >= recipe.minTemperature();
         boolean powered = energy.getEnergyStored() >= activeEnergyPerTick;
-        boolean hasRoom = outputTank.fill(recipe.result(), IFluidHandler.FluidAction.SIMULATE) == recipe.result().getAmount();
+        boolean hasRoom = hasRoomFor(recipe);
 
         activeStatus = !powered ? STATUS_NO_POWER
                 : !hot ? STATUS_TOO_COLD
@@ -380,12 +397,22 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         }
     }
 
+    /** Both products must fit, or nothing is made - a full bottle slot stops the batch like a full tank. */
+    private boolean hasRoomFor(MixingRecipe recipe) {
+        boolean fluidFits = recipe.result().isEmpty()
+                || outputTank.fill(recipe.result(), IFluidHandler.FluidAction.SIMULATE) == recipe.result().getAmount();
+        boolean itemFits = recipe.resultItem().isEmpty()
+                || outputItems.insertItem(0, recipe.resultItem().copy(), true).isEmpty();
+        return fluidFits && itemFits;
+    }
+
     private void craft(MixingRecipe recipe) {
         int[] taken = recipe.matchIngredients(slotContents());
         if (taken == null) return;
         for (int slot : taken) inputItems.extractItem(slot, 1, false);
         recipe.fluidInput().ifPresent(fluid -> inputTank.drain(fluid.amount(), IFluidHandler.FluidAction.EXECUTE));
-        outputTank.fill(recipe.result().copy(), IFluidHandler.FluidAction.EXECUTE);
+        if (!recipe.result().isEmpty()) outputTank.fill(recipe.result().copy(), IFluidHandler.FluidAction.EXECUTE);
+        if (!recipe.resultItem().isEmpty()) outputItems.insertItem(0, recipe.resultItem().copy(), false);
     }
 
     private List<ItemStack> slotContents() {
@@ -394,12 +421,19 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         return stacks;
     }
 
+    /**
+     * The matching recipe that uses the most ingredients. Slots keep whole stacks, so a simpler
+     * recipe (red wine: sugar) often matches alongside a richer one (strad wine: cocoa and sugar);
+     * the richer one wins, and the player gets the simpler one by leaving its extras out.
+     */
     @Nullable
     private MixingRecipe findRecipe() {
         if (level == null) return null;
         return level.getRecipeManager()
-                .getRecipeFor(TwoGetherCoreMod.MIXING_TYPE.get(), new MixingRecipe.Input(inputTank.getFluid(), slotContents()), level)
+                .getRecipesFor(TwoGetherCoreMod.MIXING_TYPE.get(), new MixingRecipe.Input(inputTank.getFluid(), slotContents()), level)
+                .stream()
                 .map(RecipeHolder::value)
+                .max(java.util.Comparator.comparingInt(recipe -> recipe.ingredients().size()))
                 .orElse(null);
     }
 
@@ -604,6 +638,7 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("items", inputItems.serializeNBT(registries));
+        tag.put("outputItems", outputItems.serializeNBT(registries));
         tag.put("inputTank", inputTank.writeToNBT(registries, new CompoundTag()));
         tag.put("outputTank", outputTank.writeToNBT(registries, new CompoundTag()));
         tag.put("heat", heatCapacitor.serializeNBT(registries));
@@ -615,6 +650,7 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
     protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
         if (tag.contains("items")) inputItems.deserializeNBT(registries, tag.getCompound("items"));
+        if (tag.contains("outputItems")) outputItems.deserializeNBT(registries, tag.getCompound("outputItems"));
         if (tag.contains("inputTank")) inputTank.readFromNBT(registries, tag.getCompound("inputTank"));
         if (tag.contains("outputTank")) outputTank.readFromNBT(registries, tag.getCompound("outputTank"));
         if (tag.contains("heat")) heatCapacitor.deserializeNBT(registries, tag.getCompound("heat"));

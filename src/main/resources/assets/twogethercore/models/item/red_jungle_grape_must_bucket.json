@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twogethercore:item/red_jungle_grape_must_bucket"
+  }
+}

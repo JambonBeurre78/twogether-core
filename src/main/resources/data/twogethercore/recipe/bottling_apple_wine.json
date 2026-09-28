@@ -1,0 +1,26 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "vinery"
+    }
+  ],
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "vinery:apple_juice"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:hard_cider"
+    },
+    "amount": 375
+  },
+  "result_item": {
+    "id": "vinery:apple_wine",
+    "count": 1
+  },
+  "time": 200,
+  "energy_per_tick": 20
+}

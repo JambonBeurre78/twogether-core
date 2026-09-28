@@ -8,20 +8,20 @@
   "type": "twogethercore:mixing",
   "ingredients": [
     {
-      "item": "vinery:jungle_grapes_red"
+      "item": "vinery:white_grape"
     },
     {
-      "item": "vinery:jungle_grapes_red"
+      "item": "vinery:white_grape"
     },
     {
-      "item": "vinery:jungle_grapes_red"
+      "item": "vinery:white_grape"
     },
     {
-      "item": "vinery:jungle_grapes_red"
+      "item": "vinery:white_grape"
     }
   ],
   "result": {
-    "id": "twogethercore:grape_must",
+    "id": "twogethercore:white_grape_must",
     "amount": 250
   },
   "time": 100,
