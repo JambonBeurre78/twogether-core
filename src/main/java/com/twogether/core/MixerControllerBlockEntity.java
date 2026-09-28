@@ -7,6 +7,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -96,6 +101,21 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
     private int activeTimeTicks;
     private int activeEnergyPerTick;
     private int activeStatus = STATUS_NOT_FORMED;
+    // Where the vat's interior is, for the fluid renderer (server copy, filled on formation).
+    private int centerX, centerZ, bottomY;
+
+    // What the client draws inside the vat, received through the block entity update packet.
+    private boolean renderFormed;
+    private int renderCenterX, renderCenterZ, renderBottomY, renderLayers;
+    private FluidStack renderFluid = FluidStack.EMPTY;
+    private float renderFill;
+
+    // Last values sent, so an update goes out only when the picture actually changes.
+    private int sentFillPercent = -1;
+    @Nullable
+    private Fluid sentFluid;
+    private boolean sentFormed;
+
     /** Rotor column of the formed structure, bottom to top, so the blades can be set spinning. */
     private List<BlockPos> rotorPositions = List.of();
     /** Null until the first sync, so blades saved mid-spin are corrected after a reload. */
@@ -192,6 +212,98 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         if (level == null) return;
         tickMachine();
         updateRotors();
+        syncRender();
+    }
+
+    /** The fluid shown in the vat: what is being mixed, or the product once the input is used up. */
+    private FluidStack displayedFluid() {
+        return inputTank.isEmpty() ? outputTank.getFluid() : inputTank.getFluid();
+    }
+
+    private int displayedCapacity() {
+        return inputTank.isEmpty() ? outputTank.getCapacity() : inputTank.getCapacity();
+    }
+
+    /**
+     * Pushes the vat's contents to nearby clients, but only when the level moves by a whole percent
+     * or the fluid or formation changes - not every tick while the mixer runs.
+     */
+    private void syncRender() {
+        if (level == null) return;
+        FluidStack shown = displayedFluid();
+        int percent = shown.isEmpty() ? 0 : (int) ((long) shown.getAmount() * 100 / Math.max(1, displayedCapacity()));
+        Fluid fluid = shown.isEmpty() ? null : shown.getFluid();
+        if (percent == sentFillPercent && fluid == sentFluid && formed == sentFormed) return;
+        sentFillPercent = percent;
+        sentFluid = fluid;
+        sentFormed = formed;
+        BlockState state = getBlockState();
+        level.sendBlockUpdated(worldPosition, state, state, Block.UPDATE_CLIENTS);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        CompoundTag tag = super.getUpdateTag(registries);
+        CompoundTag render = new CompoundTag();
+        render.putBoolean("formed", formed);
+        render.putInt("cx", centerX);
+        render.putInt("cz", centerZ);
+        render.putInt("bottom", bottomY);
+        render.putInt("layers", bodyLayers);
+        FluidStack shown = displayedFluid();
+        render.put("fluid", shown.saveOptional(registries));
+        render.putFloat("fill", shown.isEmpty() ? 0 : (float) shown.getAmount() / Math.max(1, displayedCapacity()));
+        tag.put("render", render);
+        return tag;
+    }
+
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries) {
+        readRender(tag, registries);
+    }
+
+    @Override
+    public void onDataPacket(Connection connection, ClientboundBlockEntityDataPacket packet, HolderLookup.Provider registries) {
+        readRender(packet.getTag(), registries);
+    }
+
+    private void readRender(CompoundTag tag, HolderLookup.Provider registries) {
+        if (!tag.contains("render")) return;
+        CompoundTag render = tag.getCompound("render");
+        renderFormed = render.getBoolean("formed");
+        renderCenterX = render.getInt("cx");
+        renderCenterZ = render.getInt("cz");
+        renderBottomY = render.getInt("bottom");
+        renderLayers = render.getInt("layers");
+        renderFluid = FluidStack.parseOptional(registries, render.getCompound("fluid"));
+        renderFill = render.getFloat("fill");
+    }
+
+    // ---- Read by MixerFluidRenderer on the client ----
+
+    boolean isRenderFormed() {
+        return renderFormed;
+    }
+
+    BlockPos getRenderInteriorBottom() {
+        return new BlockPos(renderCenterX, renderBottomY, renderCenterZ);
+    }
+
+    int getRenderLayers() {
+        return renderLayers;
+    }
+
+    FluidStack getRenderFluid() {
+        return renderFluid;
+    }
+
+    float getRenderFill() {
+        return renderFill;
     }
 
     private void tickMachine() {
@@ -353,6 +465,9 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
         List<BlockPos> rotors = new ArrayList<>();
         for (int ry = bottom; ry <= top; ry++) rotors.add(new BlockPos(cx, ry, cz));
         rotorPositions = rotors;
+        centerX = cx;
+        centerZ = cz;
+        bottomY = bottom;
         bodyLayers = layers;
         blades = bladeCount;
         int capacity = BASE_TANK_MB * MixerShape.FLUID_CELLS_PER_LAYER * layers;

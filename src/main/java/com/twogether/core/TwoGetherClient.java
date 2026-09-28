@@ -15,5 +15,6 @@ public final class TwoGetherClient {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(TwoGetherCoreMod.MIXER_ROTOR_BE.get(), MixerRotorRenderer::new);
+        event.registerBlockEntityRenderer(TwoGetherCoreMod.MIXER_CONTROLLER_BE.get(), MixerFluidRenderer::new);
     }
 }
