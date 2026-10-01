@@ -1,0 +1,29 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mixing",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "item": "minecraft:phantom_membrane"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "type": "neoforge:single",
+      "fluid": "twogethercore:wedwull",
+      "amount": 250
+    }
+  ],
+  "results": [
+    {
+      "id": "twogethercore:wedwull_wings",
+      "amount": 250
+    }
+  ]
+}

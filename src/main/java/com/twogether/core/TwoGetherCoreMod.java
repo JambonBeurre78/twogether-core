@@ -41,6 +41,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Consumer;
+import net.minecraft.world.effect.MobEffect;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -260,6 +261,21 @@ public class TwoGetherCoreMod {
                     .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800, 0), 1.0F)
                     .effect(() -> new MobEffectInstance(MobEffects.DIG_SPEED, 1800, 0), 1.0F)
                     .effect(() -> new MobEffectInstance(MobEffects.JUMP, 600, 0), 1.0F)
+                    .build())));
+
+    // WEDWULL Wings, the second WEDWULL: it gives you wings - real ones, creative-style flight.
+    public static final DeferredRegister<MobEffect> MOB_EFFECTS = DeferredRegister.create(Registries.MOB_EFFECT, MODID);
+    public static final DeferredHolder<MobEffect, MobEffect> WINGS = MOB_EFFECTS.register("wings", WingsEffect::new);
+    public static final ProcessFluid WEDWULL_WINGS = new ProcessFluid("wedwull_wings", 0xFF3AA0F0, MapColor.COLOR_LIGHT_BLUE);
+    public static final DeferredItem<Item> WEDWULL_WINGS_CAN = ITEMS.registerItem("wedwull_wings_can",
+            props -> new CanItem(props.stacksTo(16).food(new FoodProperties.Builder()
+                    .nutrition(1)
+                    .saturationModifier(0.1F)
+                    .alwaysEdible()
+                    .fast()
+                    .usingConvertsTo(EMPTY_CAN.get())
+                    .effect(() -> new MobEffectInstance(WINGS, 2 * 60 * 60 * 20, 0), 1.0F)
+                    .effect(() -> new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 1800, 0), 1.0F)
                     .build())));
 
     // Optional last step of the beer chain: plain beer mixed with an adjunct becomes the matching
@@ -565,6 +581,8 @@ public class TwoGetherCoreMod {
                         output.accept(WEDWULL_BUCKET.get());
                         output.accept(EMPTY_CAN.get());
                         output.accept(WEDWULL_CAN.get());
+                        output.accept(WEDWULL_WINGS_CAN.get());
+                        output.accept(WEDWULL_WINGS.bucket.get());
                         BEER_VARIANTS.forEach(variant -> output.accept(variant.bucket.get()));
                         WINE_FLUIDS.forEach(fluid -> output.accept(fluid.bucket.get()));
                         output.accept(DISTILLATION_CASING_COPPER_ITEM.get());
@@ -678,6 +696,8 @@ public class TwoGetherCoreMod {
         RECIPE_TYPES.register(modEventBus);
         RECIPE_SERIALIZERS.register(modEventBus);
         DATA_COMPONENTS.register(modEventBus);
+        MOB_EFFECTS.register(modEventBus);
+        NeoForge.EVENT_BUS.addListener(WingsEffect::onPlayerTick);
         POI_TYPES.register(modEventBus);
         PROFESSIONS.register(modEventBus);
         NeoForge.EVENT_BUS.addListener(BartenderTrades::onVillagerTrades);

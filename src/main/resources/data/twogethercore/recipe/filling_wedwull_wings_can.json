@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:filling",
+  "ingredients": [
+    {
+      "item": "twogethercore:empty_can"
+    },
+    {
+      "type": "neoforge:single",
+      "amount": 250,
+      "fluid": "twogethercore:wedwull_wings"
+    }
+  ],
+  "results": [
+    {
+      "id": "twogethercore:wedwull_wings_can"
+    }
+  ]
+}

@@ -203,5 +203,10 @@
   "block.twogethercore.spirit_bottle": "Spirit Bottle",
   "block.twogethercore.bar_counter": "Bar Counter",
   "entity.minecraft.villager.twogethercore.bartender": "Bartender",
-  "tooltip.twogethercore.sips": "%s/%s sips"
+  "tooltip.twogethercore.sips": "%s/%s sips",
+  "fluid.twogethercore.wedwull_wings": "WEDWULL Wings",
+  "block.twogethercore.wedwull_wings": "WEDWULL Wings",
+  "item.twogethercore.wedwull_wings_bucket": "Bucket of WEDWULL Wings",
+  "item.twogethercore.wedwull_wings_can": "WEDWULL Wings",
+  "effect.twogethercore.wings": "Wings"
 }

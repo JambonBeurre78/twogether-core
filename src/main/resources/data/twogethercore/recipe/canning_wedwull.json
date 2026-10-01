@@ -1,0 +1,20 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "twogethercore:empty_can"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:wedwull"
+    },
+    "amount": 250
+  },
+  "result_item": {
+    "id": "twogethercore:wedwull_can",
+    "count": 1
+  },
+  "time": 40,
+  "energy_per_tick": 20
+}
