@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twogethercore:stemmed_glass"
+    },
+    {
+      "item": "twogethercore:vodka_bottle"
+    },
+    {
+      "item": "minecraft:chorus_fruit"
+    },
+    {
+      "item": "minecraft:ice"
+    }
+  ],
+  "result": {
+    "id": "twogethercore:stemmed_glass",
+    "count": 1,
+    "components": {
+      "twogethercore:drink": "ender_martini"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "variants": {
+    "drink=empty": {
+      "model": "twogethercore:block/stemmed_glass_empty"
+    },
+    "drink=whisky": {
+      "model": "twogethercore:block/stemmed_glass_whisky"
+    },
+    "drink=aged_whisky": {
+      "model": "twogethercore:block/stemmed_glass_aged_whisky"
+    },
+    "drink=brandy": {
+      "model": "twogethercore:block/stemmed_glass_brandy"
+    },
+    "drink=aged_brandy": {
+      "model": "twogethercore:block/stemmed_glass_aged_brandy"
+    },
+    "drink=calvados": {
+      "model": "twogethercore:block/stemmed_glass_calvados"
+    },
+    "drink=vodka": {
+      "model": "twogethercore:block/stemmed_glass_vodka"
+    },
+    "drink=rum": {
+      "model": "twogethercore:block/stemmed_glass_rum"
+    },
+    "drink=dark_rum": {
+      "model": "twogethercore:block/stemmed_glass_dark_rum"
+    },
+    "drink=old_fashioned": {
+      "model": "twogethercore:block/stemmed_glass_old_fashioned"
+    },
+    "drink=hot_toddy": {
+      "model": "twogethercore:block/stemmed_glass_hot_toddy"
+    },
+    "drink=berry_daiquiri": {
+      "model": "twogethercore:block/stemmed_glass_berry_daiquiri"
+    },
+    "drink=rum_punch": {
+      "model": "twogethercore:block/stemmed_glass_rum_punch"
+    },
+    "drink=black_russian": {
+      "model": "twogethercore:block/stemmed_glass_black_russian"
+    },
+    "drink=brandy_alexander": {
+      "model": "twogethercore:block/stemmed_glass_brandy_alexander"
+    },
+    "drink=jack_rose": {
+      "model": "twogethercore:block/stemmed_glass_jack_rose"
+    },
+    "drink=ender_martini": {
+      "model": "twogethercore:block/stemmed_glass_ender_martini"
+    }
+  }
+}

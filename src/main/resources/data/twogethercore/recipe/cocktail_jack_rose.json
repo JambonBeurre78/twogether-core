@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twogethercore:stemmed_glass"
+    },
+    {
+      "item": "twogethercore:calvados_bottle"
+    },
+    {
+      "item": "minecraft:sweet_berries"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "result": {
+    "id": "twogethercore:stemmed_glass",
+    "count": 1,
+    "components": {
+      "twogethercore:drink": "jack_rose"
+    }
+  }
+}

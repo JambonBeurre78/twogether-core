@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "twogethercore:block/bar_counter_top",
+    "side": "twogethercore:block/bar_counter_side",
+    "bottom": "minecraft:block/dark_oak_planks"
+  }
+}

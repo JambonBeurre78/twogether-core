@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twogethercore:stemmed_glass"
+    },
+    {
+      "item": "twogethercore:rum_bottle"
+    }
+  ],
+  "result": {
+    "id": "twogethercore:stemmed_glass",
+    "count": 1,
+    "components": {
+      "twogethercore:drink": "rum"
+    }
+  }
+}

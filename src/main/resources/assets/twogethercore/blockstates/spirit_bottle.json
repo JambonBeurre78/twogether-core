@@ -1,0 +1,100 @@
+{
+  "variants": {
+    "sips=1,spirit=whisky": {
+      "model": "twogethercore:block/spirit_bottle_whisky_1"
+    },
+    "sips=2,spirit=whisky": {
+      "model": "twogethercore:block/spirit_bottle_whisky_2"
+    },
+    "sips=3,spirit=whisky": {
+      "model": "twogethercore:block/spirit_bottle_whisky_3"
+    },
+    "sips=4,spirit=whisky": {
+      "model": "twogethercore:block/spirit_bottle_whisky_4"
+    },
+    "sips=1,spirit=aged_whisky": {
+      "model": "twogethercore:block/spirit_bottle_aged_whisky_1"
+    },
+    "sips=2,spirit=aged_whisky": {
+      "model": "twogethercore:block/spirit_bottle_aged_whisky_2"
+    },
+    "sips=3,spirit=aged_whisky": {
+      "model": "twogethercore:block/spirit_bottle_aged_whisky_3"
+    },
+    "sips=4,spirit=aged_whisky": {
+      "model": "twogethercore:block/spirit_bottle_aged_whisky_4"
+    },
+    "sips=1,spirit=brandy": {
+      "model": "twogethercore:block/spirit_bottle_brandy_1"
+    },
+    "sips=2,spirit=brandy": {
+      "model": "twogethercore:block/spirit_bottle_brandy_2"
+    },
+    "sips=3,spirit=brandy": {
+      "model": "twogethercore:block/spirit_bottle_brandy_3"
+    },
+    "sips=4,spirit=brandy": {
+      "model": "twogethercore:block/spirit_bottle_brandy_4"
+    },
+    "sips=1,spirit=aged_brandy": {
+      "model": "twogethercore:block/spirit_bottle_aged_brandy_1"
+    },
+    "sips=2,spirit=aged_brandy": {
+      "model": "twogethercore:block/spirit_bottle_aged_brandy_2"
+    },
+    "sips=3,spirit=aged_brandy": {
+      "model": "twogethercore:block/spirit_bottle_aged_brandy_3"
+    },
+    "sips=4,spirit=aged_brandy": {
+      "model": "twogethercore:block/spirit_bottle_aged_brandy_4"
+    },
+    "sips=1,spirit=calvados": {
+      "model": "twogethercore:block/spirit_bottle_calvados_1"
+    },
+    "sips=2,spirit=calvados": {
+      "model": "twogethercore:block/spirit_bottle_calvados_2"
+    },
+    "sips=3,spirit=calvados": {
+      "model": "twogethercore:block/spirit_bottle_calvados_3"
+    },
+    "sips=4,spirit=calvados": {
+      "model": "twogethercore:block/spirit_bottle_calvados_4"
+    },
+    "sips=1,spirit=vodka": {
+      "model": "twogethercore:block/spirit_bottle_vodka_1"
+    },
+    "sips=2,spirit=vodka": {
+      "model": "twogethercore:block/spirit_bottle_vodka_2"
+    },
+    "sips=3,spirit=vodka": {
+      "model": "twogethercore:block/spirit_bottle_vodka_3"
+    },
+    "sips=4,spirit=vodka": {
+      "model": "twogethercore:block/spirit_bottle_vodka_4"
+    },
+    "sips=1,spirit=rum": {
+      "model": "twogethercore:block/spirit_bottle_rum_1"
+    },
+    "sips=2,spirit=rum": {
+      "model": "twogethercore:block/spirit_bottle_rum_2"
+    },
+    "sips=3,spirit=rum": {
+      "model": "twogethercore:block/spirit_bottle_rum_3"
+    },
+    "sips=4,spirit=rum": {
+      "model": "twogethercore:block/spirit_bottle_rum_4"
+    },
+    "sips=1,spirit=dark_rum": {
+      "model": "twogethercore:block/spirit_bottle_dark_rum_1"
+    },
+    "sips=2,spirit=dark_rum": {
+      "model": "twogethercore:block/spirit_bottle_dark_rum_2"
+    },
+    "sips=3,spirit=dark_rum": {
+      "model": "twogethercore:block/spirit_bottle_dark_rum_3"
+    },
+    "sips=4,spirit=dark_rum": {
+      "model": "twogethercore:block/spirit_bottle_dark_rum_4"
+    }
+  }
+}

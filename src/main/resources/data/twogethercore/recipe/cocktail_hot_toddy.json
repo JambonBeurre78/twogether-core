@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "twogethercore:stemmed_glass"
+    },
+    {
+      "item": "twogethercore:whisky_bottle"
+    },
+    {
+      "item": "minecraft:honey_bottle"
+    }
+  ],
+  "result": {
+    "id": "twogethercore:stemmed_glass",
+    "count": 1,
+    "components": {
+      "twogethercore:drink": "hot_toddy"
+    }
+  }
+}

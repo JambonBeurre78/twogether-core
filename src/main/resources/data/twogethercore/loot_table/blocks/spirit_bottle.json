@@ -1,0 +1,651 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:whisky_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "whisky",
+                "sips": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:whisky_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "whisky",
+                "sips": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:whisky_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "whisky",
+                "sips": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:whisky_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "whisky",
+                "sips": "4"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:aged_whisky_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "aged_whisky",
+                "sips": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:aged_whisky_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "aged_whisky",
+                "sips": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:aged_whisky_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "aged_whisky",
+                "sips": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:aged_whisky_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "aged_whisky",
+                "sips": "4"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:brandy_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "brandy",
+                "sips": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:brandy_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "brandy",
+                "sips": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:brandy_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "brandy",
+                "sips": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:brandy_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "brandy",
+                "sips": "4"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:aged_brandy_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "aged_brandy",
+                "sips": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:aged_brandy_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "aged_brandy",
+                "sips": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:aged_brandy_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "aged_brandy",
+                "sips": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:aged_brandy_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "aged_brandy",
+                "sips": "4"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:calvados_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "calvados",
+                "sips": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:calvados_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "calvados",
+                "sips": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:calvados_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "calvados",
+                "sips": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:calvados_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "calvados",
+                "sips": "4"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:vodka_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "vodka",
+                "sips": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:vodka_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "vodka",
+                "sips": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:vodka_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "vodka",
+                "sips": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:vodka_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "vodka",
+                "sips": "4"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:rum_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "rum",
+                "sips": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:rum_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "rum",
+                "sips": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:rum_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "rum",
+                "sips": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:rum_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "rum",
+                "sips": "4"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:dark_rum_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "dark_rum",
+                "sips": "1"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 1
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:dark_rum_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "dark_rum",
+                "sips": "2"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:dark_rum_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "dark_rum",
+                "sips": "3"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:sips": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:dark_rum_bottle",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:spirit_bottle",
+              "properties": {
+                "spirit": "dark_rum",
+                "sips": "4"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

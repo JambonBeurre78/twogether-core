@@ -41,6 +41,13 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.function.Consumer;
+import com.google.common.collect.ImmutableSet;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.neoforged.neoforge.common.NeoForge;
 
 /**
  * Mod fourre-tout pour TWHOGETHER. Premier morceau : un fluide "biere" simple
@@ -320,29 +327,64 @@ public class TwoGetherCoreMod {
     /** Our own yeast, so the brewing chain does not depend on Farm & Charm's. */
     public static final DeferredItem<Item> YEAST = ITEMS.registerSimpleItem("yeast");
 
-    public static final DeferredItem<Item> WHISKY_BOTTLE = spiritBottle("whisky_bottle", () -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 0), 200);
-    public static final DeferredItem<Item> AGED_WHISKY_BOTTLE = spiritBottle("aged_whisky_bottle", () -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 3600, 0), 100);
-    public static final DeferredItem<Item> BRANDY_BOTTLE = spiritBottle("brandy_bottle", () -> new MobEffectInstance(MobEffects.REGENERATION, 400, 0), 200);
-    public static final DeferredItem<Item> AGED_BRANDY_BOTTLE = spiritBottle("aged_brandy_bottle", () -> new MobEffectInstance(MobEffects.REGENERATION, 900, 0), 100);
-    public static final DeferredItem<Item> CALVADOS_BOTTLE = spiritBottle("calvados_bottle", () -> new MobEffectInstance(MobEffects.HEALTH_BOOST, 2400, 0), 160);
-    public static final DeferredItem<Item> VODKA_BOTTLE = spiritBottle("vodka_bottle", () -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1200, 0), 300);
-    public static final DeferredItem<Item> RUM_BOTTLE = spiritBottle("rum_bottle", () -> new MobEffectInstance(MobEffects.WATER_BREATHING, 2400, 0), 200);
-    public static final DeferredItem<Item> DARK_RUM_BOTTLE = spiritBottle("dark_rum_bottle", () -> new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 1800, 0), 100);
-    public static final java.util.List<DeferredItem<Item>> SPIRIT_BOTTLES = java.util.List.of(
+    // Drinks: what a glass holds, and how many sips an opened bottle has left.
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS =
+            DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, MODID);
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Drink>> DRINK =
+            DATA_COMPONENTS.registerComponentType("drink", builder -> builder.persistent(Drink.CODEC).networkSynchronized(Drink.STREAM_CODEC));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> SIPS =
+            DATA_COMPONENTS.registerComponentType("sips", builder -> builder.persistent(ExtraCodecs.POSITIVE_INT).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    public static final DeferredItem<SpiritBottleItem> WHISKY_BOTTLE = ITEMS.registerItem("whisky_bottle",
+            props -> new SpiritBottleItem(Drink.WHISKY, props));
+    public static final DeferredItem<SpiritBottleItem> AGED_WHISKY_BOTTLE = ITEMS.registerItem("aged_whisky_bottle",
+            props -> new SpiritBottleItem(Drink.AGED_WHISKY, props));
+    public static final DeferredItem<SpiritBottleItem> BRANDY_BOTTLE = ITEMS.registerItem("brandy_bottle",
+            props -> new SpiritBottleItem(Drink.BRANDY, props));
+    public static final DeferredItem<SpiritBottleItem> AGED_BRANDY_BOTTLE = ITEMS.registerItem("aged_brandy_bottle",
+            props -> new SpiritBottleItem(Drink.AGED_BRANDY, props));
+    public static final DeferredItem<SpiritBottleItem> CALVADOS_BOTTLE = ITEMS.registerItem("calvados_bottle",
+            props -> new SpiritBottleItem(Drink.CALVADOS, props));
+    public static final DeferredItem<SpiritBottleItem> VODKA_BOTTLE = ITEMS.registerItem("vodka_bottle",
+            props -> new SpiritBottleItem(Drink.VODKA, props));
+    public static final DeferredItem<SpiritBottleItem> RUM_BOTTLE = ITEMS.registerItem("rum_bottle",
+            props -> new SpiritBottleItem(Drink.RUM, props));
+    public static final DeferredItem<SpiritBottleItem> DARK_RUM_BOTTLE = ITEMS.registerItem("dark_rum_bottle",
+            props -> new SpiritBottleItem(Drink.DARK_RUM, props));
+    public static final java.util.List<DeferredItem<SpiritBottleItem>> SPIRIT_BOTTLES = java.util.List.of(
             WHISKY_BOTTLE, AGED_WHISKY_BOTTLE, BRANDY_BOTTLE, AGED_BRANDY_BOTTLE,
             CALVADOS_BOTTLE, VODKA_BOTTLE, RUM_BOTTLE, DARK_RUM_BOTTLE);
 
-    /** A drinkable spirit: one effect for the spirit's character, and some nausea for the strength. */
-    private static DeferredItem<Item> spiritBottle(String name, java.util.function.Supplier<MobEffectInstance> effect, int nauseaTicks) {
-        return ITEMS.registerItem(name, props -> new CanItem(props.stacksTo(16).food(new FoodProperties.Builder()
-                .nutrition(2)
-                .saturationModifier(0.2F)
-                .alwaysEdible()
-                .usingConvertsTo(Items.GLASS_BOTTLE)
-                .effect(effect, 1.0F)
-                .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, nauseaTicks, 0), 1.0F)
-                .build())));
+    /** The bottle item of a spirit. */
+    static SpiritBottleItem bottleFor(Drink spirit) {
+        for (DeferredItem<SpiritBottleItem> bottle : SPIRIT_BOTTLES) {
+            if (bottle.get().drink() == spirit) return bottle.get();
+        }
+        throw new IllegalArgumentException("No bottle for " + spirit);
     }
+
+    // Bottles and glasses set down on a floor or a table; translucent, no collision to speak of.
+    public static final DeferredBlock<SpiritBottleBlock> SPIRIT_BOTTLE_BLOCK = BLOCKS.register("spirit_bottle",
+            () -> new SpiritBottleBlock(BlockBehaviour.Properties.of().strength(0.3F).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredBlock<StemmedGlassBlock> STEMMED_GLASS_BLOCK = BLOCKS.register("stemmed_glass",
+            () -> new StemmedGlassBlock(BlockBehaviour.Properties.of().strength(0.3F).sound(SoundType.GLASS).noOcclusion().pushReaction(PushReaction.DESTROY)));
+    public static final DeferredItem<StemmedGlassItem> STEMMED_GLASS = ITEMS.registerItem("stemmed_glass",
+            props -> new StemmedGlassItem(STEMMED_GLASS_BLOCK.get(), props));
+
+    // The bartender: a villager profession whose workstation is the Bar Counter.
+    public static final DeferredBlock<Block> BAR_COUNTER = BLOCKS.registerSimpleBlock("bar_counter",
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD));
+    public static final DeferredItem<BlockItem> BAR_COUNTER_ITEM = ITEMS.registerSimpleBlockItem("bar_counter", BAR_COUNTER);
+
+    public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, MODID);
+    public static final DeferredHolder<PoiType, PoiType> BARTENDER_POI = POI_TYPES.register("bartender",
+            () -> new PoiType(ImmutableSet.copyOf(BAR_COUNTER.get().getStateDefinition().getPossibleStates()), 1, 1));
+
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(Registries.VILLAGER_PROFESSION, MODID);
+    public static final DeferredHolder<VillagerProfession, VillagerProfession> BARTENDER = PROFESSIONS.register("bartender",
+            () -> new VillagerProfession("bartender",
+                    poi -> poi.is(BARTENDER_POI.getKey()), poi -> poi.is(BARTENDER_POI.getKey()),
+                    ImmutableSet.of(), ImmutableSet.of(), SoundEvents.BOTTLE_FILL));
 
     static BlockBehaviour.Properties processBlockProperties(MapColor mapColor) {
         return BlockBehaviour.Properties.of()
@@ -542,6 +584,8 @@ public class TwoGetherCoreMod {
                         output.accept(YEAST.get());
                         SPIRIT_FLUIDS.forEach(fluid -> output.accept(fluid.bucket.get()));
                         SPIRIT_BOTTLES.forEach(bottle -> output.accept(bottle.get()));
+                        for (Drink drink : Drink.values()) output.accept(StemmedGlassBlock.glassStack(drink));
+                        output.accept(BAR_COUNTER_ITEM.get());
                     })
                     .build());
 
@@ -633,6 +677,10 @@ public class TwoGetherCoreMod {
         MENU_TYPES.register(modEventBus);
         RECIPE_TYPES.register(modEventBus);
         RECIPE_SERIALIZERS.register(modEventBus);
+        DATA_COMPONENTS.register(modEventBus);
+        POI_TYPES.register(modEventBus);
+        PROFESSIONS.register(modEventBus);
+        NeoForge.EVENT_BUS.addListener(BartenderTrades::onVillagerTrades);
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::registerScreens);
         // Only touch CC classes when it is installed: it is an optional dependency.

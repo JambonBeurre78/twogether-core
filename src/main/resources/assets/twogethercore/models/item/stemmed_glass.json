@@ -1,0 +1,104 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "twogethercore:item/stemmed_glass"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "twogethercore:drink": 0.01
+      },
+      "model": "twogethercore:item/stemmed_glass_whisky"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.02
+      },
+      "model": "twogethercore:item/stemmed_glass_aged_whisky"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.03
+      },
+      "model": "twogethercore:item/stemmed_glass_brandy"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.04
+      },
+      "model": "twogethercore:item/stemmed_glass_aged_brandy"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.05
+      },
+      "model": "twogethercore:item/stemmed_glass_calvados"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.06
+      },
+      "model": "twogethercore:item/stemmed_glass_vodka"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.07
+      },
+      "model": "twogethercore:item/stemmed_glass_rum"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.08
+      },
+      "model": "twogethercore:item/stemmed_glass_dark_rum"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.09
+      },
+      "model": "twogethercore:item/stemmed_glass_old_fashioned"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.1
+      },
+      "model": "twogethercore:item/stemmed_glass_hot_toddy"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.11
+      },
+      "model": "twogethercore:item/stemmed_glass_berry_daiquiri"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.12
+      },
+      "model": "twogethercore:item/stemmed_glass_rum_punch"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.13
+      },
+      "model": "twogethercore:item/stemmed_glass_black_russian"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.14
+      },
+      "model": "twogethercore:item/stemmed_glass_brandy_alexander"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.15
+      },
+      "model": "twogethercore:item/stemmed_glass_jack_rose"
+    },
+    {
+      "predicate": {
+        "twogethercore:drink": 0.16
+      },
+      "model": "twogethercore:item/stemmed_glass_ender_martini"
+    }
+  ]
+}

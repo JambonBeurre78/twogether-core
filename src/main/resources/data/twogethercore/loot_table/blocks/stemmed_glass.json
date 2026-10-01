@@ -1,0 +1,360 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "empty"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "whisky"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "whisky"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "aged_whisky"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "aged_whisky"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "brandy"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "brandy"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "aged_brandy"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "aged_brandy"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "calvados"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "calvados"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "vodka"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "vodka"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "rum"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "rum"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "dark_rum"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "dark_rum"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "old_fashioned"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "old_fashioned"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "hot_toddy"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "hot_toddy"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "berry_daiquiri"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "berry_daiquiri"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "rum_punch"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "rum_punch"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "black_russian"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "black_russian"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "brandy_alexander"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "brandy_alexander"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "jack_rose"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "jack_rose"
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "twogethercore:stemmed_glass",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "twogethercore:stemmed_glass",
+              "properties": {
+                "drink": "ender_martini"
+              }
+            }
+          ],
+          "functions": [
+            {
+              "function": "minecraft:set_components",
+              "components": {
+                "twogethercore:drink": "ender_martini"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
