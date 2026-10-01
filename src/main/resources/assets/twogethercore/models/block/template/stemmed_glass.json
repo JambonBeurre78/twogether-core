@@ -5,7 +5,7 @@
   "textures": {
     "particle": "twogethercore:block/stemmed_glass",
     "glass": "twogethercore:block/stemmed_glass",
-    "liquid": "twogethercore:block/drink_old_fashioned"
+    "liquid": "twogethercore:block/drink_whisky"
   },
   "elements": [
     {
@@ -140,5 +140,6 @@
       },
       "name": "bowl"
     }
-  ]
+  ],
+  "credit": "Template for tools/drink_models.py - edit in Blockbench, keep the element named 'liquid'"
 }

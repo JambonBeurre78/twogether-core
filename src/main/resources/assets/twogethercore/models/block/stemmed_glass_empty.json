@@ -37,7 +37,8 @@
         "down": {
           "texture": "#glass"
         }
-      }
+      },
+      "name": "foot"
     },
     {
       "from": [
@@ -69,7 +70,8 @@
         "down": {
           "texture": "#glass"
         }
-      }
+      },
+      "name": "stem"
     },
     {
       "from": [
@@ -101,7 +103,8 @@
         "down": {
           "texture": "#glass"
         }
-      }
+      },
+      "name": "bowl"
     }
   ]
 }
