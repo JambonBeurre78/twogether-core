@@ -293,6 +293,57 @@ public class TwoGetherCoreMod {
             WHITE_TAIGA_MUST, WHITE_TAIGA_WINE,
             APPLE_MUST, APPLE_WINE);
 
+    // Spirits, none of which needs a Let's Do mod: mashes made in the Mixer, washes fermented and
+    // spirits distilled in the tower, and aged spirits from the Aging Cask.
+    public static final ProcessFluid GRAIN_MASH = new ProcessFluid("grain_mash", 0xFFC8A868, MapColor.SAND);
+    public static final ProcessFluid GRAIN_WASH = new ProcessFluid("grain_wash", 0xFFB89850, MapColor.SAND);
+    public static final ProcessFluid POTATO_MASH = new ProcessFluid("potato_mash", 0xFFD8C8A0, MapColor.SAND);
+    public static final ProcessFluid POTATO_WASH = new ProcessFluid("potato_wash", 0xFFC8B888, MapColor.SAND);
+    public static final ProcessFluid CANE_JUICE = new ProcessFluid("cane_juice", 0xFFB8C870, MapColor.COLOR_LIGHT_GREEN);
+    public static final ProcessFluid SUGAR_WASH = new ProcessFluid("sugar_wash", 0xFFC0B060, MapColor.COLOR_YELLOW);
+    public static final ProcessFluid WHISKY = new ProcessFluid("whisky", 0xFFB86A20, MapColor.COLOR_ORANGE);
+    public static final ProcessFluid AGED_WHISKY = new ProcessFluid("aged_whisky", 0xFF8A4A10, MapColor.COLOR_BROWN);
+    public static final ProcessFluid BRANDY = new ProcessFluid("brandy", 0xFFC07830, MapColor.COLOR_ORANGE);
+    public static final ProcessFluid AGED_BRANDY = new ProcessFluid("aged_brandy", 0xFF904818, MapColor.COLOR_BROWN);
+    public static final ProcessFluid CALVADOS = new ProcessFluid("calvados", 0xFFD09040, MapColor.GOLD);
+    public static final ProcessFluid VODKA = new ProcessFluid("vodka", 0xFFE8F0F4, MapColor.SNOW);
+    public static final ProcessFluid RUM = new ProcessFluid("rum", 0xFFD8A048, MapColor.GOLD);
+    public static final ProcessFluid DARK_RUM = new ProcessFluid("dark_rum", 0xFF5A2A10, MapColor.COLOR_BROWN);
+    public static final java.util.List<ProcessFluid> SPIRIT_FLUIDS = java.util.List.of(
+            GRAIN_MASH, GRAIN_WASH, POTATO_MASH, POTATO_WASH,
+            CANE_JUICE, SUGAR_WASH, WHISKY, AGED_WHISKY,
+            BRANDY, AGED_BRANDY, CALVADOS, VODKA,
+            RUM, DARK_RUM);
+
+    /** Left over from mashing grain: compost, animal feed or Mekanism bio fuel. */
+    public static final DeferredItem<Item> SPENT_GRAIN = ITEMS.registerSimpleItem("spent_grain");
+    /** Our own yeast, so the brewing chain does not depend on Farm & Charm's. */
+    public static final DeferredItem<Item> YEAST = ITEMS.registerSimpleItem("yeast");
+
+    public static final DeferredItem<Item> WHISKY_BOTTLE = spiritBottle("whisky_bottle", () -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1200, 0), 200);
+    public static final DeferredItem<Item> AGED_WHISKY_BOTTLE = spiritBottle("aged_whisky_bottle", () -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 3600, 0), 100);
+    public static final DeferredItem<Item> BRANDY_BOTTLE = spiritBottle("brandy_bottle", () -> new MobEffectInstance(MobEffects.REGENERATION, 400, 0), 200);
+    public static final DeferredItem<Item> AGED_BRANDY_BOTTLE = spiritBottle("aged_brandy_bottle", () -> new MobEffectInstance(MobEffects.REGENERATION, 900, 0), 100);
+    public static final DeferredItem<Item> CALVADOS_BOTTLE = spiritBottle("calvados_bottle", () -> new MobEffectInstance(MobEffects.HEALTH_BOOST, 2400, 0), 160);
+    public static final DeferredItem<Item> VODKA_BOTTLE = spiritBottle("vodka_bottle", () -> new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 1200, 0), 300);
+    public static final DeferredItem<Item> RUM_BOTTLE = spiritBottle("rum_bottle", () -> new MobEffectInstance(MobEffects.WATER_BREATHING, 2400, 0), 200);
+    public static final DeferredItem<Item> DARK_RUM_BOTTLE = spiritBottle("dark_rum_bottle", () -> new MobEffectInstance(MobEffects.DOLPHINS_GRACE, 1800, 0), 100);
+    public static final java.util.List<DeferredItem<Item>> SPIRIT_BOTTLES = java.util.List.of(
+            WHISKY_BOTTLE, AGED_WHISKY_BOTTLE, BRANDY_BOTTLE, AGED_BRANDY_BOTTLE,
+            CALVADOS_BOTTLE, VODKA_BOTTLE, RUM_BOTTLE, DARK_RUM_BOTTLE);
+
+    /** A drinkable spirit: one effect for the spirit's character, and some nausea for the strength. */
+    private static DeferredItem<Item> spiritBottle(String name, java.util.function.Supplier<MobEffectInstance> effect, int nauseaTicks) {
+        return ITEMS.registerItem(name, props -> new CanItem(props.stacksTo(16).food(new FoodProperties.Builder()
+                .nutrition(2)
+                .saturationModifier(0.2F)
+                .alwaysEdible()
+                .usingConvertsTo(Items.GLASS_BOTTLE)
+                .effect(effect, 1.0F)
+                .effect(() -> new MobEffectInstance(MobEffects.CONFUSION, nauseaTicks, 0), 1.0F)
+                .build())));
+    }
+
     static BlockBehaviour.Properties processBlockProperties(MapColor mapColor) {
         return BlockBehaviour.Properties.of()
                 .mapColor(mapColor)
@@ -447,6 +498,9 @@ public class TwoGetherCoreMod {
             ITEMS.registerSimpleBlockItem("mixer_rotor", MIXER_ROTOR);
 
     public static final DeferredBlock<Block> MIXER_DRIVE = BLOCKS.registerSimpleBlock("mixer_drive", towerBlockProperties());
+    public static final DeferredBlock<AgingCaskBlock> AGING_CASK = BLOCKS.register("aging_cask",
+            () -> new AgingCaskBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+    public static final DeferredItem<BlockItem> AGING_CASK_ITEM = ITEMS.registerSimpleBlockItem("aging_cask", AGING_CASK);
     public static final DeferredItem<BlockItem> MIXER_DRIVE_ITEM =
             ITEMS.registerSimpleBlockItem("mixer_drive", MIXER_DRIVE);
 
@@ -483,6 +537,11 @@ public class TwoGetherCoreMod {
                         output.accept(MIXER_ROTOR_ITEM.get());
                         output.accept(MIXER_DRIVE_ITEM.get());
                         output.accept(MIXER_BLADE.get());
+                        output.accept(AGING_CASK_ITEM.get());
+                        output.accept(SPENT_GRAIN.get());
+                        output.accept(YEAST.get());
+                        SPIRIT_FLUIDS.forEach(fluid -> output.accept(fluid.bucket.get()));
+                        SPIRIT_BOTTLES.forEach(bottle -> output.accept(bottle.get()));
                     })
                     .build());
 
@@ -500,6 +559,10 @@ public class TwoGetherCoreMod {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MixerControllerBlockEntity>> MIXER_CONTROLLER_BE =
             BLOCK_ENTITIES.register("mixer_controller", () -> BlockEntityType.Builder.of(
                     MixerControllerBlockEntity::new, MIXER_CONTROLLER.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AgingCaskBlockEntity>> AGING_CASK_BE =
+            BLOCK_ENTITIES.register("aging_cask", () -> BlockEntityType.Builder.of(
+                    AgingCaskBlockEntity::new, AGING_CASK.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MixerRotorBlockEntity>> MIXER_ROTOR_BE =
             BLOCK_ENTITIES.register("mixer_rotor", () -> BlockEntityType.Builder.of(
@@ -521,6 +584,18 @@ public class TwoGetherCoreMod {
 
     public static final DeferredHolder<RecipeSerializer<?>, FermentingRecipe.Serializer> FERMENTING_SERIALIZER =
             RECIPE_SERIALIZERS.register("fermenting", FermentingRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<DistillingRecipe>> DISTILLING_TYPE =
+            RECIPE_TYPES.register("distilling", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "distilling")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, DistillingRecipe.Serializer> DISTILLING_SERIALIZER =
+            RECIPE_SERIALIZERS.register("distilling", DistillingRecipe.Serializer::new);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<AgingRecipe>> AGING_TYPE =
+            RECIPE_TYPES.register("aging", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "aging")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, AgingRecipe.Serializer> AGING_SERIALIZER =
+            RECIPE_SERIALIZERS.register("aging", AgingRecipe.Serializer::new);
 
     public static final DeferredHolder<RecipeType<?>, RecipeType<MixingRecipe>> MIXING_TYPE =
             RECIPE_TYPES.register("mixing", () -> RecipeType.simple(ResourceLocation.fromNamespaceAndPath(MODID, "mixing")));
@@ -560,6 +635,8 @@ public class TwoGetherCoreMod {
         RECIPE_SERIALIZERS.register(modEventBus);
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::registerScreens);
+        // Only touch CC classes when it is installed: it is an optional dependency.
+        if (net.neoforged.fml.ModList.get().isLoaded("computercraft")) ComputerCraftCompat.register();
     }
 
     private void registerScreens(RegisterMenuScreensEvent event) {
@@ -574,6 +651,8 @@ public class TwoGetherCoreMod {
                 (be, side) -> be.getItemCapability());
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, DISTILLATION_VALVE_BE.get(),
                 (be, side) -> be.getEnergyCapability());
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, AGING_CASK_BE.get(),
+                (be, side) -> be.getTank());
         // Heat is taken on the valves, not the controller: conductors hook into the tower wall.
         event.registerBlockEntity(mekanism.common.capabilities.Capabilities.HEAT, DISTILLATION_VALVE_BE.get(),
                 (be, side) -> be);

@@ -1,0 +1,29 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:brown_concrete_powder"
+    },
+    {
+      "item": "minecraft:brown_concrete_powder"
+    },
+    {
+      "item": "minecraft:brown_concrete_powder"
+    },
+    {
+      "item": "minecraft:brown_concrete_powder"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "minecraft:water"
+    },
+    "amount": 250
+  },
+  "result_item": {
+    "id": "minecraft:brown_concrete",
+    "count": 4
+  },
+  "time": 40,
+  "energy_per_tick": 20
+}

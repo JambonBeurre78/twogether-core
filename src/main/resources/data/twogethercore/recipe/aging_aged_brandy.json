@@ -1,0 +1,8 @@
+{
+  "type": "twogethercore:aging",
+  "input": {
+    "fluid": "twogethercore:brandy"
+  },
+  "result": "twogethercore:aged_brandy",
+  "time": 24000
+}

@@ -23,5 +23,9 @@
   },
   "time": 100,
   "energy_per_tick": 20,
-  "min_temperature": 340
+  "min_temperature": 340,
+  "result_item": {
+    "id": "twogethercore:spent_grain",
+    "count": 1
+  }
 }

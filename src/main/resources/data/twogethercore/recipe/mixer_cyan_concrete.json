@@ -1,0 +1,29 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:cyan_concrete_powder"
+    },
+    {
+      "item": "minecraft:cyan_concrete_powder"
+    },
+    {
+      "item": "minecraft:cyan_concrete_powder"
+    },
+    {
+      "item": "minecraft:cyan_concrete_powder"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "minecraft:water"
+    },
+    "amount": 250
+  },
+  "result_item": {
+    "id": "minecraft:cyan_concrete",
+    "count": 4
+  },
+  "time": 40,
+  "energy_per_tick": 20
+}

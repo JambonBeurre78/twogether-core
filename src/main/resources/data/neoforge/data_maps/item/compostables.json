@@ -1,0 +1,10 @@
+{
+  "values": {
+    "twogethercore:spent_grain": {
+      "chance": 0.65
+    },
+    "twogethercore:yeast": {
+      "chance": 0.3
+    }
+  }
+}

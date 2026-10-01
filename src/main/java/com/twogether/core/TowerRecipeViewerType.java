@@ -9,29 +9,34 @@ import net.minecraft.world.level.ItemLike;
 import java.util.List;
 
 /**
- * Describes the fermenting category to Mekanism's recipe-viewer framework, so their category and
- * recipe renderers lay our entries out the way they lay out their own machines. The window below
- * is the top half of DistillationTowerControllerScreen, so the EMI entry is literally a crop of
- * the machine's own interface.
+ * Describes a tower category (fermenting or distilling) to Mekanism's recipe-viewer framework, so
+ * their category and recipe renderers lay our entries out the way they lay out their own
+ * machines. The window below is the top half of DistillationTowerControllerScreen, so the EMI
+ * entry is literally a crop of the machine's own interface.
  */
-public class FermentingRecipeViewerType implements IRecipeViewerRecipeType<FermentingRecipe> {
+public class TowerRecipeViewerType<R extends TowerRecipe> implements IRecipeViewerRecipeType<R> {
 
-    public static final FermentingRecipeViewerType INSTANCE = new FermentingRecipeViewerType();
+    public static final TowerRecipeViewerType<FermentingRecipe> FERMENTING =
+            new TowerRecipeViewerType<>("fermenting", FermentingRecipe.class);
+    public static final TowerRecipeViewerType<DistillingRecipe> DISTILLING =
+            new TowerRecipeViewerType<>("distilling", DistillingRecipe.class);
 
-    private static final ResourceLocation ID =
-            ResourceLocation.fromNamespaceAndPath(TwoGetherCoreMod.MODID, "fermenting");
+    private final ResourceLocation id;
+    private final Class<R> recipeClass;
 
-    private FermentingRecipeViewerType() {
+    private TowerRecipeViewerType(String name, Class<R> recipeClass) {
+        this.id = ResourceLocation.fromNamespaceAndPath(TwoGetherCoreMod.MODID, name);
+        this.recipeClass = recipeClass;
     }
 
     @Override
     public ResourceLocation id() {
-        return ID;
+        return id;
     }
 
     @Override
-    public Class<? extends FermentingRecipe> recipeClass() {
-        return FermentingRecipe.class;
+    public Class<? extends R> recipeClass() {
+        return recipeClass;
     }
 
     @Override
@@ -46,7 +51,7 @@ public class FermentingRecipeViewerType implements IRecipeViewerRecipeType<Ferme
 
     @Override
     public ResourceLocation icon() {
-        return ID;
+        return id;
     }
 
     // Same window Mekanism uses for its own evaporating display, and for the same reason: the
@@ -80,6 +85,6 @@ public class FermentingRecipeViewerType implements IRecipeViewerRecipeType<Ferme
 
     @Override
     public Component getTextComponent() {
-        return Component.translatable("emi.category.twogethercore.fermenting");
+        return Component.translatable("emi.category." + id.getNamespace() + "." + id.getPath());
     }
 }

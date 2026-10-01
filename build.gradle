@@ -51,4 +51,5 @@ dependencies {
     compileOnly files('libs/Mekanism-1.21.1-10.7.19.85.jar')
     compileOnly files('libs/MekanismGenerators-1.21.1-10.7.19.85.jar')
     compileOnly files('libs/emi-1.1.24+1.21.1+neoforge.jar')
+    compileOnly files('libs/cc-tweaked-1.21.1-forge-1.117.1.jar')
 }

@@ -1,0 +1,34 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:wheat"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "minecraft:water"
+    },
+    "amount": 250
+  },
+  "result": {
+    "id": "twogethercore:grain_mash",
+    "amount": 250
+  },
+  "result_item": {
+    "id": "twogethercore:spent_grain",
+    "count": 1
+  },
+  "time": 100,
+  "energy_per_tick": 20,
+  "min_temperature": 340
+}

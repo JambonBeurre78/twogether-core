@@ -96,6 +96,7 @@ public class DistillationTowerControllerScreen extends GuiMekanism<DistillationT
             case DistillationTowerControllerBlockEntity.STATUS_NOT_ENOUGH_INPUT -> "gui.twogethercore.status.not_enough_input";
             case DistillationTowerControllerBlockEntity.STATUS_TOO_COLD -> "gui.twogethercore.status.too_cold";
             case DistillationTowerControllerBlockEntity.STATUS_OUTPUT_FULL -> "gui.twogethercore.status.output_full";
+            case DistillationTowerControllerBlockEntity.STATUS_TOO_HOT -> "gui.twogethercore.status.too_hot";
             default -> "gui.twogethercore.status.idle";
         };
         return Component.translatable(key).withStyle(ChatFormatting.RED);
@@ -112,7 +113,8 @@ public class DistillationTowerControllerScreen extends GuiMekanism<DistillationT
     }
 
     private BooleanSupplier tooCold() {
-        return () -> menu.getData(14) == DistillationTowerControllerBlockEntity.STATUS_TOO_COLD;
+        return () -> menu.getData(14) == DistillationTowerControllerBlockEntity.STATUS_TOO_COLD
+                || menu.getData(14) == DistillationTowerControllerBlockEntity.STATUS_TOO_HOT;
     }
 
     private BooleanSupplier noUsableInput() {

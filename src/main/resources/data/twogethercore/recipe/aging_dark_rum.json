@@ -1,0 +1,8 @@
+{
+  "type": "twogethercore:aging",
+  "input": {
+    "fluid": "twogethercore:rum"
+  },
+  "result": "twogethercore:dark_rum",
+  "time": 24000
+}

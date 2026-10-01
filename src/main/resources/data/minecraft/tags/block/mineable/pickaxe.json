@@ -1,0 +1,15 @@
+{
+  "values": [
+    "twogethercore:distillation_tower_casing_copper",
+    "twogethercore:distillation_tower_casing_steel",
+    "twogethercore:distillation_tower_valve_copper",
+    "twogethercore:distillation_tower_valve_steel",
+    "twogethercore:distillation_tower_controller_copper",
+    "twogethercore:distillation_tower_controller_steel",
+    "twogethercore:mixer_casing",
+    "twogethercore:mixer_valve",
+    "twogethercore:mixer_controller",
+    "twogethercore:mixer_rotor",
+    "twogethercore:mixer_drive"
+  ]
+}

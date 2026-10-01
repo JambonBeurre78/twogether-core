@@ -14,25 +14,26 @@ import mekanism.common.MekanismLang;
 import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.UnitDisplayUtils.TemperatureUnit;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
 
 /**
- * One tower fermenting recipe, drawn by Mekanism's own recipe-viewer renderer with the exact
- * element coordinates of DistillationTowerControllerScreen - so the EMI entry is the machine's
- * interface, not a drawing of it. Only the recipes and the category are ours, which is what
- * keeps them off the Thermal Evaporation Plant.
+ * One tower recipe, fermenting or distilling, drawn by Mekanism's own recipe-viewer renderer with
+ * the exact element coordinates of DistillationTowerControllerScreen - so the EMI entry is the
+ * machine's interface, not a drawing of it. Only the recipes and the categories are ours, which
+ * is what keeps them off the Thermal Evaporation Plant.
  */
-public class FermentingEmiRecipe extends MekanismEmiHolderRecipe<FermentingRecipe> {
+public class TowerEmiRecipe<R extends Recipe<?> & TowerRecipe> extends MekanismEmiHolderRecipe<R> {
 
-    private final FermentingRecipe fermenting;
+    private final R recipe;
 
-    public FermentingEmiRecipe(MekanismEmiRecipeCategory category, RecipeHolder<FermentingRecipe> holder) {
+    public TowerEmiRecipe(MekanismEmiRecipeCategory category, RecipeHolder<R> holder) {
         super(category, holder);
-        this.fermenting = holder.value();
-        addInputDefinition(FluidStackIngredient.of(fermenting.input()));
-        addFluidOutputDefinition(List.of(fermenting.result()));
+        this.recipe = holder.value();
+        addInputDefinition(FluidStackIngredient.of(recipe.input()));
+        addFluidOutputDefinition(List.of(recipe.result()));
     }
 
     @Override
@@ -49,11 +50,17 @@ public class FermentingEmiRecipe extends MekanismEmiHolderRecipe<FermentingRecip
     }
 
     private List<Component> screenLines() {
+        Component temperature = Double.isInfinite(recipe.maxTemperature())
+                ? MekanismLang.TEMPERATURE.translate(kelvin(recipe.minTemperature()))
+                : Component.translatable("emi.twogethercore.distilling.window", kelvin(recipe.minTemperature()), kelvin(recipe.maxTemperature()));
         return List.of(
-                MekanismLang.TEMPERATURE.translate(MekanismUtils.getTemperatureDisplay(
-                        fermenting.minTemperature(), TemperatureUnit.KELVIN, true)),
-                Component.translatable("emi.twogethercore.fermenting.time", fermenting.time() / 20.0),
+                temperature,
+                Component.translatable("emi.twogethercore.fermenting.time", recipe.time() / 20.0),
                 Component.translatable("emi.twogethercore.fermenting.amount",
-                        fermenting.input().amount(), fermenting.result().getAmount()));
+                        recipe.input().amount(), recipe.result().getAmount()));
+    }
+
+    private static Component kelvin(double temperature) {
+        return MekanismUtils.getTemperatureDisplay(temperature, TemperatureUnit.KELVIN, true);
     }
 }

@@ -1,0 +1,20 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "twogethercore:yeast"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:concentrated_wort"
+    },
+    "amount": 250
+  },
+  "result": {
+    "id": "twogethercore:pitched_wort",
+    "amount": 250
+  },
+  "time": 100,
+  "energy_per_tick": 20
+}

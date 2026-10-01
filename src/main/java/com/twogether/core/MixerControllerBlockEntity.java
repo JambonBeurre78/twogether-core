@@ -35,6 +35,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Set;
 
@@ -208,6 +210,28 @@ public class MixerControllerBlockEntity extends BlockEntity implements IMekanism
     @Override
     public void onContentsChanged() {
         setChanged();
+    }
+
+    /** Lua names of the status codes, by code. */
+    private static final String[] STATUS_NAMES = {"running", "not_formed", "no_recipe", "no_blades", "no_power", "too_cold", "output_full"};
+
+    @Override
+    public Map<String, Object> getComputerState() {
+        Map<String, Object> state = new LinkedHashMap<>();
+        state.put("machine", "mixer");
+        state.put("formed", formed);
+        state.put("status", STATUS_NAMES[activeStatus]);
+        state.put("bodyLayers", bodyLayers);
+        state.put("blades", blades);
+        state.put("progress", progress);
+        state.put("recipeTime", activeTimeTicks);
+        state.put("temperature", heatCapacitor.getTemperature());
+        state.put("energy", energy.getEnergyStored());
+        state.put("energyCapacity", energy.getMaxEnergyStored());
+        state.put("energyPerTick", activeEnergyPerTick);
+        state.put("input", MultiblockController.describeTank(inputTank));
+        state.put("output", MultiblockController.describeTank(outputTank));
+        return state;
     }
 
     // ---- MenuProvider ----

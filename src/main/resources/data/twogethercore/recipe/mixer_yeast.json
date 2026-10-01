@@ -1,0 +1,23 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "twogethercore:yeast"
+    },
+    {
+      "item": "minecraft:sugar"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "minecraft:water"
+    },
+    "amount": 250
+  },
+  "result_item": {
+    "id": "twogethercore:yeast",
+    "count": 3
+  },
+  "time": 200,
+  "energy_per_tick": 20
+}

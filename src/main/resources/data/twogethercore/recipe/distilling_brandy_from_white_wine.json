@@ -1,0 +1,16 @@
+{
+  "type": "twogethercore:distilling",
+  "input": {
+    "ingredient": {
+      "fluid": "twogethercore:white_wine"
+    },
+    "amount": 500
+  },
+  "result": {
+    "id": "twogethercore:brandy",
+    "amount": 100
+  },
+  "time": 300,
+  "min_temperature": 352,
+  "max_temperature": 368
+}

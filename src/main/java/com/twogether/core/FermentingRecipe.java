@@ -23,7 +23,13 @@ import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
  * brine on our tower.
  */
 public record FermentingRecipe(SizedFluidIngredient input, FluidStack result, int time, double minTemperature)
-        implements Recipe<FermentingRecipe.Input> {
+        implements Recipe<FermentingRecipe.Input>, TowerRecipe {
+
+    /** Fermentation only needs warmth: there is no upper limit. */
+    @Override
+    public double maxTemperature() {
+        return Double.POSITIVE_INFINITY;
+    }
 
     /** Fluid-only input: the tower ferments a tank's contents, no item is involved. */
     public record Input(FluidStack fluid) implements RecipeInput {

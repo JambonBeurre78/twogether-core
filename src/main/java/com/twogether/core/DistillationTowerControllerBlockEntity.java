@@ -30,6 +30,8 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Set;
 
@@ -70,6 +72,7 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
     public static final int STATUS_NOT_ENOUGH_INPUT = 3;
     public static final int STATUS_TOO_COLD = 4;
     public static final int STATUS_OUTPUT_FULL = 5;
+    public static final int STATUS_TOO_HOT = 6;
 
     private final SimpleHeatCapacitor heatCapacitor = new SimpleHeatCapacitor(HEAT_CAPACITY, 1.0, 5.0, this::setChanged);
     private final ItemStackHandler inputSlot = new ItemStackHandler(1) {
@@ -192,6 +195,26 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
         return heatCapacitor.getTemperature();
     }
 
+    /** Lua names of the status codes, by code. */
+    private static final String[] STATUS_NAMES = {"running", "not_formed", "no_recipe", "not_enough_input", "too_cold", "output_full", "too_hot"};
+
+    @Override
+    public Map<String, Object> getComputerState() {
+        Map<String, Object> state = new LinkedHashMap<>();
+        state.put("machine", "distillation_tower");
+        state.put("tier", isSteelTier() ? "steel" : "copper");
+        state.put("formed", formed);
+        state.put("status", STATUS_NAMES[activeStatus]);
+        state.put("bodyLayers", bodyLayers);
+        state.put("speedMultiplier", throughputMultiplier);
+        state.put("progress", progress);
+        state.put("recipeTime", activeTimeTicks);
+        state.put("temperature", heatCapacitor.getTemperature());
+        state.put("input", MultiblockController.describeTank(inputTank));
+        state.put("output", MultiblockController.describeTank(outputTank));
+        return state;
+    }
+
     public ItemStackHandler getInputSlot() {
         return inputSlot;
     }
@@ -248,7 +271,7 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
 
         heatCapacitor.coolTowardAmbient(passiveCoolingPerTick() * HEAT_CAPACITY);
 
-        FermentingRecipe recipe = findRecipe();
+        TowerRecipe recipe = findRecipe();
         if (recipe == null) {
             activeStatus = STATUS_NO_RECIPE;
             activeTimeTicks = isSteelTier() ? FERMENT_TIME_TICKS_STEEL : FERMENT_TIME_TICKS_COPPER;
@@ -268,17 +291,20 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
         int producedOutput = result.getAmount();
         activeOutputPerCraft = producedOutput;
 
-        boolean hot = heatCapacitor.getTemperature() >= recipe.minTemperature();
+        double temperature = heatCapacitor.getTemperature();
+        boolean hot = temperature >= recipe.minTemperature();
+        boolean notTooHot = temperature <= recipe.maxTemperature();
         boolean enoughInput = neededInput > 0 && inputTank.getFluidAmount() >= neededInput;
         FluidStack produced = new FluidStack(result.getFluid(), producedOutput);
         boolean hasRoom = outputTank.fill(produced, IFluidHandler.FluidAction.SIMULATE) == producedOutput;
 
         activeStatus = !enoughInput ? STATUS_NOT_ENOUGH_INPUT
                 : !hot ? STATUS_TOO_COLD
+                : !notTooHot ? STATUS_TOO_HOT
                 : !hasRoom ? STATUS_OUTPUT_FULL
                 : STATUS_RUNNING;
 
-        if (hot && enoughInput && hasRoom) {
+        if (hot && notTooHot && enoughInput && hasRoom) {
             heatCapacitor.handleHeat(-heatConsumedPerTick() * throughputMultiplier * heatCapacitor.getHeatCapacity());
             progress++;
             if (progress >= activeTimeTicks) {
@@ -294,7 +320,7 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
     }
 
     /**
-     * True if some evaporating recipe takes this fluid. The answer is cached and refreshed on the
+     * True if some fermenting or distilling recipe takes this fluid. The answer is cached and refreshed on the
      * structure rescan, because the tank asks this on every pipe insertion attempt, and it must
      * also survive a datapack reload adding recipes.
      */
@@ -312,20 +338,32 @@ public class DistillationTowerControllerBlockEntity extends BlockEntity implemen
                 accepted.add(fluid.getFluid());
             }
         }
+        for (RecipeHolder<DistillingRecipe> holder : level.getRecipeManager().getAllRecipesFor(TwoGetherCoreMod.DISTILLING_TYPE.get())) {
+            for (FluidStack fluid : holder.value().input().getFluids()) {
+                accepted.add(fluid.getFluid());
+            }
+        }
         acceptedInputs = accepted;
     }
 
+    /** The fermenting or distilling recipe for the tank's fluid; a fluid has one or the other. */
     @Nullable
-    private FermentingRecipe findRecipe() {
+    private TowerRecipe findRecipe() {
         if (level == null || inputTank.isEmpty()) return null;
+        FermentingRecipe.Input input = new FermentingRecipe.Input(inputTank.getFluid());
+        TowerRecipe fermenting = level.getRecipeManager()
+                .getRecipeFor(TwoGetherCoreMod.FERMENTING_TYPE.get(), input, level)
+                .map(RecipeHolder::value)
+                .orElse(null);
+        if (fermenting != null) return fermenting;
         return level.getRecipeManager()
-                .getRecipeFor(TwoGetherCoreMod.FERMENTING_TYPE.get(), new FermentingRecipe.Input(inputTank.getFluid()), level)
+                .getRecipeFor(TwoGetherCoreMod.DISTILLING_TYPE.get(), input, level)
                 .map(RecipeHolder::value)
                 .orElse(null);
     }
 
     /** Steel runs the same recipe faster than copper. */
-    private int recipeTimeTicks(FermentingRecipe recipe) {
+    private int recipeTimeTicks(TowerRecipe recipe) {
         double factor = isSteelTier() ? STEEL_TIME_FACTOR : 1.0;
         return Math.max(1, (int) Math.round(recipe.time() * factor));
     }

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "twogethercore:block/aging_cask_side",
+    "end": "twogethercore:block/aging_cask_end"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "create"
+    }
+  ],
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "item": "twogethercore:yeast"
+    },
+    {
+      "type": "neoforge:single",
+      "fluid": "twogethercore:concentrated_wort",
+      "amount": 250
+    }
+  ],
+  "results": [
+    {
+      "id": "twogethercore:pitched_wort",
+      "amount": 250
+    }
+  ]
+}

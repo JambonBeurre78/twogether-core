@@ -1,0 +1,15 @@
+{
+  "type": "twogethercore:fermenting",
+  "input": {
+    "ingredient": {
+      "fluid": "twogethercore:grain_mash"
+    },
+    "amount": 250
+  },
+  "result": {
+    "id": "twogethercore:grain_wash",
+    "amount": 250
+  },
+  "time": 280,
+  "min_temperature": 340
+}

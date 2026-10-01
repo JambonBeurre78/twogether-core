@@ -1,0 +1,29 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "item": "minecraft:sugar_cane"
+    },
+    {
+      "item": "minecraft:sugar_cane"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "minecraft:water"
+    },
+    "amount": 250
+  },
+  "result": {
+    "id": "twogethercore:cane_juice",
+    "amount": 250
+  },
+  "time": 100,
+  "energy_per_tick": 20
+}

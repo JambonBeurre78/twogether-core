@@ -1,0 +1,20 @@
+{
+  "type": "twogethercore:mixing",
+  "ingredients": [
+    {
+      "item": "minecraft:glass_bottle"
+    }
+  ],
+  "fluid": {
+    "ingredient": {
+      "fluid": "twogethercore:rum"
+    },
+    "amount": 250
+  },
+  "result_item": {
+    "id": "twogethercore:rum_bottle",
+    "count": 1
+  },
+  "time": 40,
+  "energy_per_tick": 20
+}

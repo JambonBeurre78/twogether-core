@@ -38,3 +38,11 @@ description='''Mod maison fourre-tout pour le pack TWHOGETHER - fluides, blocs e
     versionRange="[10.7,)"
     ordering="AFTER"
     side="BOTH"
+
+# Optional: the valves become a peripheral when CC:Tweaked is present.
+[[dependencies.twogethercore]]
+    modId="computercraft"
+    type="optional"
+    versionRange="[1.110,)"
+    ordering="NONE"
+    side="BOTH"
