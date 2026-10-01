@@ -1,7 +1,279 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "minecraft:block/block",
   "textures": {
-    "side": "twogethercore:block/aging_cask_side",
-    "end": "twogethercore:block/aging_cask_end"
-  }
+    "particle": "twogethercore:block/aging_cask_staves",
+    "staves": "twogethercore:block/aging_cask_staves",
+    "hoop": "twogethercore:block/aging_cask_hoop",
+    "end": "twogethercore:block/aging_cask_end",
+    "cradle": "minecraft:block/spruce_planks"
+  },
+  "elements": [
+    {
+      "name": "barrel_bulge",
+      "from": [
+        4,
+        2.5,
+        1.5
+      ],
+      "to": [
+        12,
+        15.5,
+        14.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#staves"
+        },
+        "south": {
+          "texture": "#staves"
+        },
+        "up": {
+          "texture": "#staves"
+        },
+        "down": {
+          "texture": "#staves"
+        }
+      }
+    },
+    {
+      "name": "barrel",
+      "from": [
+        1,
+        3,
+        2
+      ],
+      "to": [
+        15,
+        15,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#staves"
+        },
+        "south": {
+          "texture": "#staves"
+        },
+        "up": {
+          "texture": "#staves"
+        },
+        "down": {
+          "texture": "#staves"
+        },
+        "east": {
+          "texture": "#end"
+        },
+        "west": {
+          "texture": "#end"
+        }
+      }
+    },
+    {
+      "name": "hoop_west",
+      "from": [
+        2.5,
+        2.75,
+        1.75
+      ],
+      "to": [
+        3.5,
+        15.25,
+        14.25
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hoop"
+        },
+        "south": {
+          "texture": "#hoop"
+        },
+        "up": {
+          "texture": "#hoop"
+        },
+        "down": {
+          "texture": "#hoop"
+        }
+      }
+    },
+    {
+      "name": "hoop_mid_west",
+      "from": [
+        5.5,
+        2.25,
+        1.25
+      ],
+      "to": [
+        6.5,
+        15.75,
+        14.75
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hoop"
+        },
+        "south": {
+          "texture": "#hoop"
+        },
+        "up": {
+          "texture": "#hoop"
+        },
+        "down": {
+          "texture": "#hoop"
+        }
+      }
+    },
+    {
+      "name": "hoop_mid_east",
+      "from": [
+        9.5,
+        2.25,
+        1.25
+      ],
+      "to": [
+        10.5,
+        15.75,
+        14.75
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hoop"
+        },
+        "south": {
+          "texture": "#hoop"
+        },
+        "up": {
+          "texture": "#hoop"
+        },
+        "down": {
+          "texture": "#hoop"
+        }
+      }
+    },
+    {
+      "name": "hoop_east",
+      "from": [
+        12.5,
+        2.75,
+        1.75
+      ],
+      "to": [
+        13.5,
+        15.25,
+        14.25
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hoop"
+        },
+        "south": {
+          "texture": "#hoop"
+        },
+        "up": {
+          "texture": "#hoop"
+        },
+        "down": {
+          "texture": "#hoop"
+        }
+      }
+    },
+    {
+      "name": "cradle_west",
+      "from": [
+        2,
+        0,
+        1
+      ],
+      "to": [
+        4,
+        3.5,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cradle"
+        },
+        "south": {
+          "texture": "#cradle"
+        },
+        "east": {
+          "texture": "#cradle"
+        },
+        "west": {
+          "texture": "#cradle"
+        },
+        "up": {
+          "texture": "#cradle"
+        },
+        "down": {
+          "texture": "#cradle"
+        }
+      }
+    },
+    {
+      "name": "cradle_east",
+      "from": [
+        12,
+        0,
+        1
+      ],
+      "to": [
+        14,
+        3.5,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cradle"
+        },
+        "south": {
+          "texture": "#cradle"
+        },
+        "east": {
+          "texture": "#cradle"
+        },
+        "west": {
+          "texture": "#cradle"
+        },
+        "up": {
+          "texture": "#cradle"
+        },
+        "down": {
+          "texture": "#cradle"
+        }
+      }
+    },
+    {
+      "name": "tap",
+      "from": [
+        14.5,
+        4.5,
+        7.25
+      ],
+      "to": [
+        16,
+        6,
+        8.75
+      ],
+      "faces": {
+        "north": {
+          "texture": "#hoop"
+        },
+        "south": {
+          "texture": "#hoop"
+        },
+        "east": {
+          "texture": "#hoop"
+        },
+        "west": {
+          "texture": "#hoop"
+        },
+        "up": {
+          "texture": "#hoop"
+        },
+        "down": {
+          "texture": "#hoop"
+        }
+      }
+    }
+  ]
 }

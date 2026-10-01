@@ -372,8 +372,8 @@ public class TwoGetherCoreMod {
             props -> new StemmedGlassItem(STEMMED_GLASS_BLOCK.get(), props));
 
     // The bartender: a villager profession whose workstation is the Bar Counter.
-    public static final DeferredBlock<Block> BAR_COUNTER = BLOCKS.registerSimpleBlock("bar_counter",
-            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD));
+    public static final DeferredBlock<BarCounterBlock> BAR_COUNTER = BLOCKS.register("bar_counter",
+            () -> new BarCounterBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD).noOcclusion()));
     public static final DeferredItem<BlockItem> BAR_COUNTER_ITEM = ITEMS.registerSimpleBlockItem("bar_counter", BAR_COUNTER);
 
     public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, MODID);
@@ -541,7 +541,7 @@ public class TwoGetherCoreMod {
 
     public static final DeferredBlock<Block> MIXER_DRIVE = BLOCKS.registerSimpleBlock("mixer_drive", towerBlockProperties());
     public static final DeferredBlock<AgingCaskBlock> AGING_CASK = BLOCKS.register("aging_cask",
-            () -> new AgingCaskBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD)));
+            () -> new AgingCaskBlock(BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD).noOcclusion()));
     public static final DeferredItem<BlockItem> AGING_CASK_ITEM = ITEMS.registerSimpleBlockItem("aging_cask", AGING_CASK);
     public static final DeferredItem<BlockItem> MIXER_DRIVE_ITEM =
             ITEMS.registerSimpleBlockItem("mixer_drive", MIXER_DRIVE);

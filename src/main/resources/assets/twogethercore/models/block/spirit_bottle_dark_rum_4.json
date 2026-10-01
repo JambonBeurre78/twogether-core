@@ -6,19 +6,21 @@
     "particle": "twogethercore:block/bottle_glass",
     "glass": "twogethercore:block/bottle_glass",
     "liquid": "twogethercore:block/drink_dark_rum",
-    "cork": "twogethercore:block/cork"
+    "cork": "twogethercore:block/cork",
+    "label": "twogethercore:block/bottle_label"
   },
   "elements": [
     {
+      "name": "liquid",
       "from": [
-        6.5,
+        6,
         0.5,
-        6.5
+        6
       ],
       "to": [
-        9.5,
-        8.5,
-        9.5
+        10,
+        7.5,
+        10
       ],
       "faces": {
         "north": {
@@ -39,13 +41,79 @@
         "down": {
           "texture": "#liquid"
         }
-      },
-      "name": "liquid"
+      }
     },
     {
+      "name": "body",
+      "from": [
+        5.5,
+        0,
+        5.5
+      ],
+      "to": [
+        10.5,
+        8,
+        10.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass"
+        },
+        "south": {
+          "texture": "#glass"
+        },
+        "east": {
+          "texture": "#glass"
+        },
+        "west": {
+          "texture": "#glass"
+        },
+        "up": {
+          "texture": "#glass"
+        },
+        "down": {
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "label",
+      "from": [
+        5.4,
+        2.5,
+        5.4
+      ],
+      "to": [
+        10.6,
+        5.5,
+        10.6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#label",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#label",
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ]
+        }
+      }
+    },
+    {
+      "name": "shoulder",
       "from": [
         6,
-        0,
+        8,
         6
       ],
       "to": [
@@ -72,19 +140,19 @@
         "down": {
           "texture": "#glass"
         }
-      },
-      "name": "body"
+      }
     },
     {
+      "name": "shoulder_top",
       "from": [
-        6.5,
+        6.75,
         9,
-        6.5
+        6.75
       ],
       "to": [
-        9.5,
-        10,
-        9.5
+        9.25,
+        9.75,
+        9.25
       ],
       "faces": {
         "north": {
@@ -105,13 +173,13 @@
         "down": {
           "texture": "#glass"
         }
-      },
-      "name": "shoulder"
+      }
     },
     {
+      "name": "neck",
       "from": [
         7.25,
-        10,
+        9.75,
         7.25
       ],
       "to": [
@@ -138,19 +206,52 @@
         "down": {
           "texture": "#glass"
         }
-      },
-      "name": "neck"
+      }
     },
     {
+      "name": "lip",
       "from": [
-        7.25,
+        7,
         12.5,
-        7.25
+        7
       ],
       "to": [
-        8.75,
-        13.5,
-        8.75
+        9,
+        13,
+        9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass"
+        },
+        "south": {
+          "texture": "#glass"
+        },
+        "east": {
+          "texture": "#glass"
+        },
+        "west": {
+          "texture": "#glass"
+        },
+        "up": {
+          "texture": "#glass"
+        },
+        "down": {
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "cork",
+      "from": [
+        7.4,
+        13,
+        7.4
+      ],
+      "to": [
+        8.6,
+        14.25,
+        8.6
       ],
       "faces": {
         "north": {
@@ -171,8 +272,7 @@
         "down": {
           "texture": "#cork"
         }
-      },
-      "name": "cork"
+      }
     }
   ]
 }

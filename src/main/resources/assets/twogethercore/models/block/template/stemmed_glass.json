@@ -1,4 +1,5 @@
 {
+  "credit": "Template for tools/drink_models.py - edit in Blockbench, keep the element named 'liquid'",
   "parent": "minecraft:block/block",
   "render_type": "minecraft:translucent",
   "ambientocclusion": false,
@@ -9,6 +10,7 @@
   },
   "elements": [
     {
+      "name": "foot",
       "from": [
         5,
         0,
@@ -38,19 +40,19 @@
         "down": {
           "texture": "#glass"
         }
-      },
-      "name": "foot"
+      }
     },
     {
+      "name": "foot_dome",
       "from": [
-        7.5,
+        6.5,
         0.5,
-        7.5
+        6.5
       ],
       "to": [
-        8.5,
-        4.5,
-        8.5
+        9.5,
+        1,
+        9.5
       ],
       "faces": {
         "north": {
@@ -71,13 +73,79 @@
         "down": {
           "texture": "#glass"
         }
-      },
-      "name": "stem"
+      }
     },
     {
+      "name": "stem",
+      "from": [
+        7.6,
+        1,
+        7.6
+      ],
+      "to": [
+        8.4,
+        5,
+        8.4
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass"
+        },
+        "south": {
+          "texture": "#glass"
+        },
+        "east": {
+          "texture": "#glass"
+        },
+        "west": {
+          "texture": "#glass"
+        },
+        "up": {
+          "texture": "#glass"
+        },
+        "down": {
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "bowl_base",
+      "from": [
+        6.5,
+        5,
+        6.5
+      ],
+      "to": [
+        9.5,
+        5.75,
+        9.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass"
+        },
+        "south": {
+          "texture": "#glass"
+        },
+        "east": {
+          "texture": "#glass"
+        },
+        "west": {
+          "texture": "#glass"
+        },
+        "up": {
+          "texture": "#glass"
+        },
+        "down": {
+          "texture": "#glass"
+        }
+      }
+    },
+    {
+      "name": "liquid",
       "from": [
         6,
-        5,
+        5.75,
         6
       ],
       "to": [
@@ -104,18 +172,18 @@
         "down": {
           "texture": "#liquid"
         }
-      },
-      "name": "liquid"
+      }
     },
     {
+      "name": "bowl",
       "from": [
         5.5,
-        4.5,
+        5.75,
         5.5
       ],
       "to": [
         10.5,
-        10,
+        10.5,
         10.5
       ],
       "faces": {
@@ -131,15 +199,37 @@
         "west": {
           "texture": "#glass"
         },
-        "up": {
-          "texture": "#glass"
-        },
         "down": {
           "texture": "#glass"
         }
-      },
-      "name": "bowl"
+      }
+    },
+    {
+      "name": "rim",
+      "from": [
+        5.4,
+        10.25,
+        5.4
+      ],
+      "to": [
+        10.6,
+        10.5,
+        10.6
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass"
+        },
+        "south": {
+          "texture": "#glass"
+        },
+        "east": {
+          "texture": "#glass"
+        },
+        "west": {
+          "texture": "#glass"
+        }
+      }
     }
-  ],
-  "credit": "Template for tools/drink_models.py - edit in Blockbench, keep the element named 'liquid'"
+  ]
 }
